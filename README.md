@@ -1,3 +1,5 @@
 # jjjunearthed
 
-A web scraper which pulls artist, track and track review data from JJJ's Unearthed site. Execute at your own peril.
+A web scraper which pulls artist, track and track review data from JJJ's Unearthed site. Using the [Scrapy](https://scrapy.org) Python web scraping framework.
+
+Execute at your own peril.
