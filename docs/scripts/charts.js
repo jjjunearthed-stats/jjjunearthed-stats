@@ -1,4 +1,4 @@
-document.onload = function() {
+window.onload = function() {
   // Set a callback to run when the Google Visualization API is loaded.
   google.charts.setOnLoadCallback(drawChart);
 
