@@ -1,4 +1,5 @@
 window.onload = function() {
+  google.charts.load('current', {'packages': ['geochart']});
   // Set a callback to run when the Google Visualization API is loaded.
   google.charts.setOnLoadCallback(drawChart);
 
@@ -6,24 +7,14 @@ window.onload = function() {
   // instantiates the pie chart, passes in the data and
   // draws it.
   function drawChart() {
-
-    // Create the data table.
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Topping');
-    data.addColumn('number', 'Slices');
-    data.addRows([
-      ['Mushrooms', 3],
-      ['Onions', 1],
-      ['Olives', 1],
-      ['Zucchini', 1],
-      ['Pepperoni', 2]
-    ]);
-
-    // Set chart options
-    var options = {'title':'How Much Pizza I Ate Last Night'};
-
-    // Instantiate and draw our chart, passing in some options.
-    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
+    $.getJSON('test.json', function(jsonData) {
+      var options = {
+        region: 'AU',
+        displayMode: 'markers',
+        colorAxis: {colors: ['green', 'blue']}
+      };
+      var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    });
   }
 }
