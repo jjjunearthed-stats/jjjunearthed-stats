@@ -7,16 +7,16 @@ window.onload = function() {
   // instantiates the pie chart, passes in the data and
   // draws it.
   function drawChart() {
-    $.getJSON("data/artistByLocation.json", function([
-        ["City",   "Population", "Area"],
-        ["Brisbane",      2761477,    1285.31],
-        ["Melbourne",     1324110,    181.76]
-      ]) {
+    $.getJSON("data/artistByLocation.json", function(jsonData) {
       var options = {
         region: "AU",
         displayMode: "markers"
       };
-      var data = google.visualization.arrayToDataTable(jsonData);
+      var data = google.visualization.arrayToDataTable([
+        ["City",   "Population", "Area"],
+        ["Brisbane",      2761477,    1285.31],
+        ["Melbourne",     1324110,    181.76]
+      ]);
       var chart = new google.visualization.GeoChart(document.getElementById("chart_div"));
       chart.draw(data, options);
     });
