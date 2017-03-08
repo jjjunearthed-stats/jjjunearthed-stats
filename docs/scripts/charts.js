@@ -1,5 +1,5 @@
 window.onload = function() {
-  google.charts.load('current', {'packages': ['geochart']});
+  google.charts.load("current", {"packages": ["geochart"]});
   // Set a callback to run when the Google Visualization API is loaded.
   google.charts.setOnLoadCallback(drawChart);
 
@@ -7,14 +7,14 @@ window.onload = function() {
   // instantiates the pie chart, passes in the data and
   // draws it.
   function drawChart() {
-    $.getJSON('data/artistByLocation.json', function(jsonData) {
+    $.getJSON("data/artistByLocation.json", function(jsonData) {
       var options = {
-        region: 'AU',
-        displayMode: 'markers',
-        colorAxis: {colors: ['green', 'blue']}
+        region: "AU",
+        displayMode: "markers",
+        colorAxis: {colors: ["green", "blue"]}
       };
       var data = google.visualization.arrayToDataTable(jsonData);
-      var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+      var chart = new google.visualization.GeoChart($("chart_div"));
       chart.draw(data, options);
     });
   }
