@@ -10,7 +10,8 @@ window.onload = function() {
     $.getJSON("data/artistByLocation.json", function(jsonData) {
       var options = {
         region: "IT",
-        displayMode: "markers"
+        displayMode: "markers",
+        colorAxis: {colors: ['green', 'blue']}
       };
       var data = google.visualization.arrayToDataTable([
         ["City",   "Population", "Area"],
