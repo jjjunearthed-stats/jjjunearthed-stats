@@ -1,5 +1,5 @@
 window.onload = function() {
-  google.charts.load("current", {"packages": ["geochart"]});
+  google.charts.load('visualization', '1', {"packages": ["geochart"]});
   // Set a callback to run when the Google Visualization API is loaded.
   google.charts.setOnLoadCallback(drawChart);
 
