@@ -21,7 +21,7 @@ function drawMarkersMap() {
 
   var options = {region: 'IT', displayMode: 'markers', colors:['green', 'blue']};
 
-  var chart = new google.visualization.GeoChart(document.getElementById('markers_div'));
+  var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
   chart.draw(data, options);
 }
 </script>
