@@ -8,9 +8,9 @@ window.onload = function() {
   // draws it.
   function drawChart() {
     $.getJSON("data/artistByLocation.json", function([
-        ['City',   'Population', 'Area'],
-        ['Brisbane',      2761477,    1285.31],
-        ['Melbourne',     1324110,    181.76]
+        ["City",   "Population", "Area"],
+        ["Brisbane",      2761477,    1285.31],
+        ["Melbourne",     1324110,    181.76]
       ]) {
       var options = {
         region: "AU",
