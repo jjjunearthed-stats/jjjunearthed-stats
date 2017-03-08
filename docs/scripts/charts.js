@@ -10,8 +10,7 @@ window.onload = function() {
     $.getJSON("data/artistByLocation.json", function(jsonData) {
       var options = {
         region: "AU",
-        displayMode: "markers",
-        colorAxis: {colors: ["green", "blue"]}
+        displayMode: "markers"
       };
       var data = google.visualization.arrayToDataTable(jsonData);
       var chart = new google.visualization.GeoChart(document.getElementById("chart_div"));
