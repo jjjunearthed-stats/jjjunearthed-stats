@@ -14,9 +14,9 @@ window.onload = function() {
         colorAxis: {colors: ['green', 'blue']}
       };
       var data = google.visualization.arrayToDataTable([
-        ["City",   "Population", "Area"],
-        ["Rome",      2761477,    1285.31],
-        ["Milan",     1324110,    181.76]
+        ['City',   'Population', 'Area'],
+        ['Rome',      2761477,    1285.31],
+        ['Milan',     1324110,    181.76]
       ]);
       var chart = new google.visualization.GeoChart(document.getElementById("chart_div"));
       chart.draw(data, options);
