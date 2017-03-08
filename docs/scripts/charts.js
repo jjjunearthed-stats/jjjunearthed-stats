@@ -7,7 +7,7 @@ window.onload = function() {
   // instantiates the pie chart, passes in the data and
   // draws it.
   function drawChart() {
-    $.getJSON('../data/artistByLocation.json', function(jsonData) {
+    $.getJSON('data/artistByLocation.json', function(jsonData) {
       var options = {
         region: 'AU',
         displayMode: 'markers',
