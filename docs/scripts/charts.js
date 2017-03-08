@@ -14,7 +14,7 @@ window.onload = function() {
         colorAxis: {colors: ["green", "blue"]}
       };
       var data = google.visualization.arrayToDataTable(jsonData);
-      var chart = new google.visualization.GeoChart($("chart_div"));
+      var chart = new google.visualization.GeoChart($("#chart_div"));
       chart.draw(data, options);
     });
   }
