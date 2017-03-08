@@ -9,13 +9,13 @@ window.onload = function() {
   function drawChart() {
     $.getJSON("data/artistByLocation.json", function(jsonData) {
       var options = {
-        region: "AU",
+        region: "IT",
         displayMode: "markers"
       };
       var data = google.visualization.arrayToDataTable([
         ["City",   "Population", "Area"],
-        ["Brisbane",      2761477,    1285.31],
-        ["Melbourne",     1324110,    181.76]
+        ["Rome",      2761477,    1285.31],
+        ["Milan",     1324110,    181.76]
       ]);
       var chart = new google.visualization.GeoChart(document.getElementById("chart_div"));
       chart.draw(data, options);
