@@ -1,5 +1,5 @@
 import scrapy
-import Entities
+import Items
 from scrapy import cmdline
 
 
@@ -13,7 +13,7 @@ def get_artists(response):
     members = response.xpath("//h3[.='band members'][1]/following-sibling::p/text()").extract_first()
     influences = response.xpath("//h3[.='Influences'][1]/following-sibling::p/text()").extract_first()
 
-    return Entities.Artist(
+    return Items.Artist(
         name=name,
         location=location,
         genre=genre,
@@ -34,7 +34,7 @@ def get_tracks(response):
     track_shares = response.xpath("//p[@class='shares'][1]/following-sibling::p/text()").extract()
     track_links = response.xpath("//a[@class='download'][1]/@href").extract()
 
-    tracks = [Entities.Track(
+    tracks = [Items.Track(
         name=name,
         plays=track_plays[i],
         downloads=track_downloads[i],
@@ -56,7 +56,7 @@ def get_reviews(response, track_name):
 
     for i, review_track in enumerate(review_tracks):
         if review_track.strip() == track_name.strip():
-            yield Entities.Review(
+            yield Items.Review(
                 reviewer=review_reviewers[i].strip(),
                 date=review_dates[i].strip(),
                 rating=to_rating(review_ratings[i].strip()))
