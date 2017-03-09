@@ -23,7 +23,7 @@ def flatten(coll):
 def artists_by_location(artists):
     group_by_location = pandas.DataFrame(artists).groupby(['location'])
 
-    data = [["City", "Number"]]
+    data = [["City", "Number of artists"]]
     for name, group in group_by_location:
         data.append([name, len(group)])
 
