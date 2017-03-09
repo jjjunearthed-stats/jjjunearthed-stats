@@ -1,5 +1,6 @@
 import json
 import pandas
+import File
 
 
 def playsoverall(band):
@@ -19,20 +20,14 @@ def flatten(coll):
     return result
 
 
-def delete_content(file):
-    file.seek(0)
-    file.truncate()
-
-
 def artists_by_location(artists):
     group_by_location = pandas.DataFrame(artists).groupby(['location'])
 
-    with open("docs/data/artistsByLocation.json", "w") as dataFile:
-        delete_content(dataFile)
-        data = [["City", "Number"]]
-        for name, group in group_by_location:
-            data.append([name, len(group)])
-        dataFile.write(json.dumps(data))
+    data = [["City", "Number"]]
+    for name, group in group_by_location:
+        data.append([name, len(group)])
+
+    File.write_file("docs/data/artistsByLocation.json", data)
 
 
 with open("artists.json") as artists_file:
