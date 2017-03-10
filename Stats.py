@@ -29,7 +29,7 @@ def artists_by_location(artists):
 
     File.write_file("docs/data/artistsByLocation.json", data)
 
-
+# "" if influences is None else list(map(lambda s: s.strip(), influences.split(",")))
 with open("artists.json") as artists_file:
     bands = json.load(artists_file)
 
