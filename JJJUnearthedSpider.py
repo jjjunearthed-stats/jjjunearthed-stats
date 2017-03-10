@@ -1,6 +1,21 @@
 import scrapy
 import Items
+import File
+import XPath
 from scrapy import cmdline
+
+
+def get_artist_likes(response):
+    like_urls = response.xpath(
+        "//div[@class='content_module module_artistinfo'][1]/div/p/a[contains(@href, '/artist/')]/@href").extract()
+    like_names = response.xpath(
+        "//div[@class='content_module module_artistinfo'][1]/div/p/a[contains(@href, '/artist/')]/text()").extract()
+
+    for i, like_url in enumerate(like_urls):
+        yield Items.ArtistRef(
+            url="https://www.triplejunearthed.com" + like_url,
+            name=like_names[i].strip()
+        )
 
 
 def get_artists(response):
@@ -22,8 +37,33 @@ def get_artists(response):
         tags=tags,
         influences="" if influences is None else list(map(lambda s: s.strip(), influences.split(","))),
         url=response.url,
-        tracks=get_tracks(response)
+        tracks=get_tracks(response),
+        likes=list(get_artist_likes(response))
     )
+
+
+def played_on_jjj(response, name):
+    played = response.xpath(
+        "//div[@class='track_name' and .=" + XPath.to_literal(name) +
+        "][1]/following-sibling::div/div[@class='icons playedontriplej'][1]").extract_first()
+
+    return played is not None
+
+
+def played_on_unearthed(response, name):
+    played = response.xpath(
+        "//div[@class='track_name' and .=" + XPath.to_literal(name) +
+        "][1]/following-sibling::div/div[@class='icons unearthed'][1]").extract_first()
+
+    return played is not None
+
+
+def mature(response, name):
+    played = response.xpath(
+        "//div[@class='track_name' and .=" + XPath.to_literal(name) +
+        "][1]/following-sibling::div/div[@class='icons mature'][1]").extract_first()
+
+    return played is not None
 
 
 def get_tracks(response):
@@ -40,6 +80,9 @@ def get_tracks(response):
         downloads=track_downloads[i],
         loves=track_loves[i],
         link="https://www.triplejunearthed.com" + track_links[i],
+        played_on_jjj=played_on_jjj(response, name),
+        played_on_unearthed=played_on_unearthed(response, name),
+        mature=mature(response, name),
         shares=track_shares[i]) for i, name in enumerate(track_names)]
 
     for track in tracks:
@@ -80,8 +123,8 @@ def to_rating(rating):
 
 class JJJUnearthedSpider(scrapy.Spider):
     name = "JJJUnearthedSpider"
-    download_delay = 3
-    start_urls = ["https://www.triplejunearthed.com/artist/lonelyspeck"]
+    download_delay = 5
+    start_urls = ["https://www.triplejunearthed.com/artist/rainbow-chan"]
 
     def parse(self, response):
         yield get_artists(response)
@@ -92,5 +135,5 @@ class JJJUnearthedSpider(scrapy.Spider):
             if next_page:
                 yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
 
-
+File.delete_content("artists.json")
 cmdline.execute("scrapy runspider JJJUnearthedSpider.py -t json -o artists.json".split())

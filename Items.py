@@ -11,6 +11,12 @@ class Artist(scrapy.Item):
     influences = scrapy.Field()
     url = scrapy.Field()
     tracks = scrapy.Field()
+    likes = scrapy.Field()
+
+
+class ArtistRef(scrapy.Item):
+    url = scrapy.Field()
+    name = scrapy.Field()
 
 
 class Track(scrapy.Item):
@@ -21,6 +27,9 @@ class Track(scrapy.Item):
     shares = scrapy.Field()
     reviews = scrapy.Field()
     link = scrapy.Field()
+    played_on_jjj = scrapy.Field()
+    played_on_unearthed = scrapy.Field()
+    mature = scrapy.Field()
 
 
 class Review(scrapy.Item):
