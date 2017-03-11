@@ -6,7 +6,18 @@ import XPath
 class JJJUnearthedSpider(scrapy.Spider):
     name = "JJJUnearthedSpider"
     download_delay = 5
-    start_urls = ["https://www.triplejunearthed.com/artist/rainbow-chan"]
+    page_number = 1
+    start_urls = [
+        "https://www.triplejunearthed.com/node?page=%d" % page for page in range(1, 3)
+    ]
+
+    def parse(self, response):
+        artist_links = response.xpath(
+            "//a[starts-with(@href, '/artist/') and not(contains(@href, 'track/')) and not(contains(@href, 'review/'))][1]/@href").extract()
+
+        for artist_link in artist_links:
+            request = scrapy.Request("https://www.triplejunearthed.com" + artist_link, callback=self.get_artist)
+            yield request
 
     @staticmethod
     def to_rating(rating):
@@ -37,7 +48,7 @@ class JJJUnearthedSpider(scrapy.Spider):
                 name=like_names[i].strip()
             )
 
-    def get_artists(self, response):
+    def get_artist(self, response):
         name = response.css("h1#unearthed-profile-title ::text").extract_first()
         location = response.css("span.genres.location span.location ::text").extract_first()
         genre = response.css("span.genres.location span.genre ::text").extract()
@@ -120,12 +131,3 @@ class JJJUnearthedSpider(scrapy.Spider):
                     reviewer=review_reviewers[i].strip(),
                     date=review_dates[i].strip(),
                     rating=self.to_rating(review_ratings[i].strip()))
-
-    def parse(self, response):
-        yield self.get_artists(response)
-        nextpages = response.xpath("//p/a[contains(@href, '/artist/')]/@href").extract()
-
-        for nextpage in nextpages:
-            next_page = nextpage
-            if next_page:
-                yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
