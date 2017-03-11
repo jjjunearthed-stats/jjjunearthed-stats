@@ -1,19 +1,23 @@
 import scrapy
-import Items
-import XPath
+
+from JJJUnearthed import XPath
+from JJJUnearthed import items
 
 
 class JJJUnearthedSpider(scrapy.Spider):
     name = "JJJUnearthedSpider"
-    download_delay = 5
+    download_delay = 10
+    spider_modules = ["JJJUnearthed.spiders"]
     page_number = 1
     start_urls = [
-        "https://www.triplejunearthed.com/node?page=%d" % page for page in range(1, 3)
+        "https://www.triplejunearthed.com/node?page=%d" % page for page in range(0, 90000)
     ]
 
     def parse(self, response):
         artist_links = response.xpath(
-            "//a[starts-with(@href, '/artist/') and not(contains(@href, 'track/')) and not(contains(@href, 'review/'))][1]/@href").extract()
+            "//a[starts-with(@href, '/artist/') "
+            "and not(contains(@href, 'track/')) "
+            "and not(contains(@href, 'review/'))][1]/@href").extract()
 
         for artist_link in artist_links:
             request = scrapy.Request("https://www.triplejunearthed.com" + artist_link, callback=self.get_artist)
@@ -43,7 +47,7 @@ class JJJUnearthedSpider(scrapy.Spider):
             "//div[@class='content_module module_artistinfo'][1]/div/p/a[contains(@href, '/artist/')]/text()").extract()
 
         for i, like_url in enumerate(like_urls):
-            yield Items.ArtistRef(
+            yield items.ArtistRef(
                 url="https://www.triplejunearthed.com" + like_url,
                 name=like_names[i].strip()
             )
@@ -58,7 +62,7 @@ class JJJUnearthedSpider(scrapy.Spider):
         members = response.xpath("//h3[.='band members'][1]/following-sibling::p/text()").extract_first()
         influences = response.xpath("//h3[.='Influences'][1]/following-sibling::p/text()").extract_first()
 
-        return Items.Artist(
+        return items.Artist(
             name=name,
             location=location,
             genre=genre,
@@ -103,7 +107,7 @@ class JJJUnearthedSpider(scrapy.Spider):
         track_shares = response.xpath("//p[@class='shares'][1]/following-sibling::p/text()").extract()
         track_links = response.xpath("//a[@class='download'][1]/@href").extract()
 
-        tracks = [Items.Track(
+        tracks = [items.Track(
             name=name,
             plays=track_plays[i],
             downloads=track_downloads[i],
@@ -127,7 +131,7 @@ class JJJUnearthedSpider(scrapy.Spider):
 
         for i, review_track in enumerate(review_tracks):
             if review_track.strip() == track_name.strip():
-                yield Items.Review(
+                yield items.Review(
                     reviewer=review_reviewers[i].strip(),
                     date=review_dates[i].strip(),
                     rating=self.to_rating(review_ratings[i].strip()))

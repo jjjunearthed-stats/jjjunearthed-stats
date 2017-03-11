@@ -1,6 +1,7 @@
 import json
 import pandas
-import File
+
+from JJJUnearthed import File
 
 
 def playsoverall(band):
