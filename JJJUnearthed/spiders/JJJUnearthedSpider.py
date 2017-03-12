@@ -1,4 +1,5 @@
 import scrapy
+import datetime
 
 from JJJUnearthed import XPath
 from JJJUnearthed import items
@@ -6,11 +7,10 @@ from JJJUnearthed import items
 
 class JJJUnearthedSpider(scrapy.Spider):
     name = "JJJUnearthedSpider"
-    download_delay = 10
+    download_delay = 5
     spider_modules = ["JJJUnearthed.spiders"]
-    page_number = 1
     start_urls = [
-        "https://www.triplejunearthed.com/node?page=%d" % page for page in range(0, 90000)
+        "https://www.triplejunearthed.com/node?page=%d" % page for page in range(0, 90200)
     ]
 
     def parse(self, response):
@@ -99,6 +99,10 @@ class JJJUnearthedSpider(scrapy.Spider):
 
         return played is not None
 
+    @staticmethod
+    def to_date(date, input_format):
+        return datetime.datetime.strptime(date, input_format).strftime("%Y-%m-%d")
+
     def get_tracks(self, response):
         track_names = response.css("div.track_name ::text").extract()
         track_plays = response.xpath("//p[@class='plays'][1]/following-sibling::p/text()").extract()
@@ -106,6 +110,7 @@ class JJJUnearthedSpider(scrapy.Spider):
         track_loves = response.xpath("//p[@class='loves'][1]/following-sibling::p/text()").extract()
         track_shares = response.xpath("//p[@class='shares'][1]/following-sibling::p/text()").extract()
         track_links = response.xpath("//a[@class='download'][1]/@href").extract()
+        track_dates = response.css("div.date_uploaded ::text").extract()
 
         tracks = [items.Track(
             name=name,
@@ -116,6 +121,7 @@ class JJJUnearthedSpider(scrapy.Spider):
             played_on_jjj=self.played_on_jjj(response, name),
             played_on_unearthed=self.played_on_unearthed(response, name),
             mature=self.mature(response, name),
+            date=self.to_date(track_dates[i].replace("Uploaded ", ""), "%d %b %y"),
             shares=track_shares[i]) for i, name in enumerate(track_names)]
 
         for track in tracks:
@@ -133,5 +139,5 @@ class JJJUnearthedSpider(scrapy.Spider):
             if review_track.strip() == track_name.strip():
                 yield items.Review(
                     reviewer=review_reviewers[i].strip(),
-                    date=review_dates[i].strip(),
+                    date=self.to_date(review_dates[i].strip(), "%d %b %Y"),
                     rating=self.to_rating(review_ratings[i].strip()))

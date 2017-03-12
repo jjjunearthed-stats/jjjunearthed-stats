@@ -30,6 +30,7 @@ class Track(scrapy.Item):
     played_on_jjj = scrapy.Field()
     played_on_unearthed = scrapy.Field()
     mature = scrapy.Field()
+    date = scrapy.Field()
 
 
 class Review(scrapy.Item):
