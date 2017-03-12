@@ -11,6 +11,9 @@ def playsoverall(band):
 
 def mostplayedtrack(band):
     trackplays = list(map(lambda t: int(t["plays"]), band["tracks"]))
+
+    if len(trackplays) == 0:
+        return 0
     return max(trackplays)
 
 
