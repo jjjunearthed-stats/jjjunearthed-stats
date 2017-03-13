@@ -9,9 +9,12 @@ class JJJUnearthedSpider(scrapy.Spider):
     name = "JJJUnearthedSpider"
     download_delay = 5
     spider_modules = ["JJJUnearthed.spiders"]
-    start_urls = [
-        "https://www.triplejunearthed.com/node?page=%d" % page for page in range(0, 90200)
-    ]
+
+    def __init__(self, from_index=0, to_index=90200, *args, **kwargs):
+        super(JJJUnearthedSpider, self).__init__(*args, **kwargs)
+        self.start_urls = [
+            "https://www.triplejunearthed.com/node?page=%d" % index for index in range(from_index, to_index)
+        ]
 
     def parse(self, response):
         artist_links = response.xpath(
