@@ -1,6 +1,5 @@
 import scrapy
 import datetime
-
 from JJJUnearthed import XPath
 from JJJUnearthed import items
 
@@ -13,7 +12,7 @@ class JJJUnearthedSpider(scrapy.Spider):
     def __init__(self, from_index=0, to_index=90200, *args, **kwargs):
         super(JJJUnearthedSpider, self).__init__(*args, **kwargs)
         self.start_urls = [
-            "https://www.triplejunearthed.com/node?page=%d" % index for index in range(from_index, to_index)
+            "https://www.triplejunearthed.com/node?page=%d" % index for index in range(int(from_index), int(to_index))
         ]
 
     def parse(self, response):
@@ -23,14 +22,13 @@ class JJJUnearthedSpider(scrapy.Spider):
             "and not(contains(@href, 'review/'))][1]/@href").extract()
 
         for artist_link in artist_links:
-            request = scrapy.Request("https://www.triplejunearthed.com" + artist_link, callback=self.get_artist)
-            yield request
+            yield scrapy.Request("https://www.triplejunearthed.com" + artist_link, callback=self.get_artist)
 
     @staticmethod
     def to_rating(rating):
         return {
-            "00": 0,
-            "05": 0.5,
+            "0": 0,
+            "5": 0.5,
             "10": 1,
             "15": 1.5,
             "20": 2,
@@ -114,16 +112,20 @@ class JJJUnearthedSpider(scrapy.Spider):
         track_shares = response.xpath("//p[@class='shares'][1]/following-sibling::p/text()").extract()
         track_links = response.xpath("//a[@class='download'][1]/@href").extract()
         track_dates = response.css("div.date_uploaded ::text").extract()
+        track_avg_rating = response.css("p.stars_sm ::text").extract()
+        number_of_reviews = response.xpath("//p[@class='reviews'][1]/following-sibling::p/text()").extract()
 
         tracks = [items.Track(
             name=name,
             plays=track_plays[i],
             downloads=track_downloads[i],
             loves=track_loves[i],
+            number_of_reviews=number_of_reviews[i],
             link="https://www.triplejunearthed.com" + track_links[i],
             played_on_jjj=self.played_on_jjj(response, name),
             played_on_unearthed=self.played_on_unearthed(response, name),
             mature=self.mature(response, name),
+            avg_rating=self.to_rating(track_avg_rating[i].strip()),
             date=self.to_date(track_dates[i].replace("Uploaded ", ""), "%d %b %y"),
             shares=track_shares[i]) for i, name in enumerate(track_names)]
 
