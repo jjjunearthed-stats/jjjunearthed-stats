@@ -31,6 +31,8 @@ class Track(scrapy.Item):
     played_on_unearthed = scrapy.Field()
     mature = scrapy.Field()
     date = scrapy.Field()
+    avg_rating = scrapy.Field()
+    number_of_reviews = scrapy.Field()
 
 
 class Review(scrapy.Item):
