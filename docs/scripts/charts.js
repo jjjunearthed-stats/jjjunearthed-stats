@@ -1,14 +1,18 @@
 $(document).ready(function() {
     google.charts.load('current', {packages:['geochart']});
-    google.charts.setOnLoadCallback(drawArtistsByLocationMap);
+    google.charts.setOnLoadCallback(drawCharts);
 
-  function drawArtistsByLocationMap() {
-      $.getJSON("data/artistsByLocation.json", function(json) {
-        var data = google.visualization.arrayToDataTable(json);
-        var options = {region: 'AU', displayMode: 'markers', colors:['green', 'blue']};
-        var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+  function drawCharts() {
+      $('.geoMap').each(function() {
+          var dataUrl = $(this).attr('data-url');
           
-        chart.draw(data, options);
+          $.getJSON(dataUrl, function(json) {
+            var data = google.visualization.arrayToDataTable(json);
+            var options = {region: 'AU', displayMode: 'markers', colors:['green', 'blue']};
+            var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+
+            chart.draw(data, options);
+          });
       });
   }
 });
