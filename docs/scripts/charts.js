@@ -3,7 +3,7 @@ $(document).ready(function() {
     google.charts.setOnLoadCallback(drawArtistsByLocationMap);
 
   function drawArtistsByLocationMap() {
-      $.getJSON("_data/artistsByLocation.json", function(json) {
+      $.getJSON("data/artistsByLocation.json", function(json) {
         var data = google.visualization.arrayToDataTable(json);
         var options = {region: 'AU', displayMode: 'markers', colors:['green', 'blue']};
         var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
