@@ -5,11 +5,12 @@ $(document).ready(function() {
   function drawCharts() {
       $('.geoMap').each(function() {
           var dataUrl = $(this).attr('data-url');
+          var chartElement = $(this)[0];
           
           $.getJSON(dataUrl, function(json) {
             var data = google.visualization.arrayToDataTable(json);
             var options = {region: 'AU', displayMode: 'markers', colors:['green', 'blue']};
-            var chart = new google.visualization.GeoChart($(this)[0]);
+            var chart = new google.visualization.GeoChart(chartElement);
 
             chart.draw(data, options);
           });
