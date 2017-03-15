@@ -1,5 +1,5 @@
-# Artists by Location:
-<div class="geoChart" data-url="data/artistsByLocation.json"></div>
+# Artists by Location
+<div id="chart_div" class="geoChart" data-url="data/artistsByLocation.json"></div>
 
-# Hierarchial likes:
+# Hierarchial likes
 <iframe src="artistHierarchialGraph.html" width="960" height="960" scrolling="no"></iframe>
