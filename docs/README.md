@@ -5,7 +5,7 @@
 <div class="geoMap" data-url="data/artistsPerCapita.json"></div>
 
 <div class="table" data-url="data/artistsLocationTable.json" 
-     data-columns="[['string', 'Location'],['number', 'Artists'],['number', 'Artists per 100 000 people']]">
+     data-columns='[["string", "Location"],["number", "Artists"],["number", "Artists per 100 000 people"]]'>
 </div>
 
 # Hierarchial likes
