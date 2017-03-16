@@ -58,6 +58,16 @@ def artists_per_capita(artists):
     File.write_file("docs/data/artistsPerCapita.json", data)
 
 
+def artists_location_table(artists):
+    group_by_location = pandas.DataFrame(artists).groupby(['location'])
+
+    data = []
+    for name, group in group_by_location:
+        data.append([name, len(group), per_capita(name, len(group))])
+
+    File.write_file("docs/data/artistsLocationTable.json", data)
+
+
 def artist_hierarchial_graph(artists):
     File.delete_content("docs/data/artistHierarchialGraph.json")
     with open("docs/data/artistHierarchialGraph.json", "w") as file:
@@ -73,6 +83,7 @@ with open("artists.json") as artists_file:
     bandmostplayedtrack = max(bands, key=mostplayedtrack)
     artists_by_location(bands)
     artists_per_capita(bands)
+    artists_location_table(bands)
     artist_hierarchial_graph(bands)
 
     print("Band most played: " + bandMostPlays["name"])
