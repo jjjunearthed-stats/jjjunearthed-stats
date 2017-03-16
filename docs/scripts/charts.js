@@ -31,7 +31,9 @@ $(document).ready(function() {
             var options = {
                 showRowNumber: false, 
                 width: '100%', 
-                height: '100%'
+                height: '100%',
+                sortColumn: 2,
+                sortAscending: false
             };
             table.draw(data, options);
           });
