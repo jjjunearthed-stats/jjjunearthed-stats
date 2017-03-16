@@ -18,17 +18,22 @@ $(document).ready(function() {
       
       $(".table").each(function() {
           var dataUrl = $(this).attr('data-url');
+          var tableElement = $(this)[0];
           
           $.getJSON(dataUrl, function(json) {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Location');
-            data.addColumn('number', 'Number of bands');
-            data.addColumn('number', 'Number of bands per 100 000 people');
+            data.addColumn('number', 'Artists');
+            data.addColumn('number', 'Artists per 100 000 people');
             data.addRows(json);
 
-            var table = new google.visualization.Table(document.getElementById('table_div'));
-
-            table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+            var table = new google.visualization.Table(tableElement);
+            var options = {
+                showRowNumber: false, 
+                width: '100%', 
+                height: '100%'
+            };
+            table.draw(data, options);
           });
       });
   }
