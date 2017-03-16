@@ -4,7 +4,7 @@ $(document).ready(function() {
 
   function drawCharts() {
       $('.geoMap').each(function() {
-          var dataUrl = $(this).attr('data-url');
+          var dataUrl = $(this).attr("data-url");
           var chartElement = $(this)[0];
           
           $.getJSON(dataUrl, function(json) {
@@ -17,14 +17,16 @@ $(document).ready(function() {
       });
       
       $(".table").each(function() {
-          var dataUrl = $(this).attr('data-url');
+          var dataUrl = $(this).attr("data-url");
+          var dataColumns = $(this).attr("data-columns");
           var tableElement = $(this)[0];
           
           $.getJSON(dataUrl, function(json) {
             var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Location');
-            data.addColumn('number', 'Artists');
-            data.addColumn('number', 'Artists per 100 000 people');
+              $.each(dataColumns, function(i, val) {
+                  data.addColumn(val[0], val[1]);
+              });
+              
             data.addRows(json);
 
             var table = new google.visualization.Table(tableElement);
