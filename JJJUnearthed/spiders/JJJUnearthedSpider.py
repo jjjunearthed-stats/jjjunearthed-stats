@@ -9,7 +9,7 @@ class JJJUnearthedSpider(scrapy.Spider):
     download_delay = 5
     spider_modules = ["JJJUnearthed.spiders"]
 
-    def __init__(self, from_index=0, to_index=90200, *args, **kwargs):
+    def __init__(self, from_index=0, to_index=90126, *args, **kwargs):
         super(JJJUnearthedSpider, self).__init__(*args, **kwargs)
         self.start_urls = [
             "https://www.triplejunearthed.com/node?page=%d" % index for index in range(int(from_index), int(to_index))
@@ -20,6 +20,8 @@ class JJJUnearthedSpider(scrapy.Spider):
             "//a[starts-with(@href, '/artist/') "
             "and not(contains(@href, 'track/')) "
             "and not(contains(@href, 'review/'))][1]/@href").extract()
+
+        self.logger.info("Parsing page")
 
         for artist_link in artist_links:
             yield scrapy.Request("https://www.triplejunearthed.com" + artist_link, callback=self.get_artist)
@@ -62,6 +64,8 @@ class JJJUnearthedSpider(scrapy.Spider):
         tags = response.xpath("//h3[.='Tags'][1]/following-sibling::p/a/text()").extract()
         members = response.xpath("//h3[.='band members'][1]/following-sibling::p/text()").extract_first()
         influences = response.xpath("//h3[.='Influences'][1]/following-sibling::p/text()").extract_first()
+
+        self.logger.info("Parsing artist")
 
         return items.Artist(
             name=name,
