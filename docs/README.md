@@ -1,4 +1,4 @@
-Statistics for {{site.data.stats.totalNumberOfArtists}} from {{site.data.stats.fromDate}} to {{site.data.stats.toDate}}.
+Statistics for {{site.data.stats.totalNumberOfArtists}} artists from {{site.data.stats.fromDate}} to {{site.data.stats.toDate}}.
 
 # Artists by Location
 <div class="geoMap" data-url="data/artistsByLocation.json"></div>
