@@ -48,7 +48,7 @@ def artists_by_location(artists):
 def artists_per_capita(artists):
     group_by_location = pandas.DataFrame(artists).groupby(['location'])
 
-    data = [["City", "Number of artists per 100000 people"]]
+    data = [["Location", "Artists per 100000 people"]]
     for name, group in group_by_location:
         location_per_capita = per_capita(name, len(group))
 
