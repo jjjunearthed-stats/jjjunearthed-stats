@@ -23,7 +23,7 @@ $(document).ready(function() {
           
           $.getJSON(dataUrl, function(json) {
             var data = new google.visualization.DataTable();
-              $.each(dataColumns, function(i, val) {
+              $.each(JSON.parse(dataColumns), function(i, val) {
                   data.addColumn(val[0], val[1]);
               });
               
