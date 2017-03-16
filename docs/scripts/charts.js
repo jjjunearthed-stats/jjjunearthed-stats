@@ -9,7 +9,7 @@ $(document).ready(function() {
           
           $.getJSON(dataUrl, function(json) {
             var data = google.visualization.arrayToDataTable(json);
-            var options = {region: 'AU', displayMode: 'markers', colors:['green', 'blue']};
+            var options = {region: 'AU', displayMode: 'markers', colors:['blue', 'red']};
             var chart = new google.visualization.GeoChart(chartElement);
 
             chart.draw(data, options);
