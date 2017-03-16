@@ -23,12 +23,17 @@ $(document).ready(function() {
           $.getJSON(dataUrl, function(json) {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Location');
-            data.addColumn('number', 'Number of bands');
-            data.addColumn('number', 'Number of bands per 100 000 people');
+            data.addColumn('number', 'Artists');
+            data.addColumn('number', 'Artists per 100 000 people');
             data.addRows(json);
 
             var table = new google.visualization.Table(tableElement);
-            table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+            var options = {
+                showRowNumber: false, 
+                width: '100%', 
+                height: '100%'
+            };
+            table.draw(data, options);
           });
       });
   }
