@@ -4,6 +4,7 @@
 # Artists Per Capita
 <div class="geoMap" data-url="data/artistsPerCapita.json"></div>
 
+<div class="table_div" data-url="data/artistsLocation.json"></div>
 <table>
 <thead>
 <tr><th>Location</th><th>Number of artists</th></tr>
