@@ -1,7 +1,5 @@
 import json
-
 import pandas
-
 import File
 
 
@@ -18,10 +16,10 @@ def mostplayedtrack(band):
     return max(trackplays)
 
 
-def flatten(coll):
+def flatten(items, column):
     result = []
-    for i in coll:
-        result.extend(i["influences"])
+    for i in items:
+        result.extend(i[column])
     return result
 
 
@@ -75,6 +73,16 @@ def artist_hierarchial_graph(artists):
             likes_json = json.dumps(artist["likes"], default=lambda o: o.__dict__)
             json.dump({"name": artist["name"], "size": 100, "imports": [likes_json]}, file)
 
+
+def stats_file(artists):
+    tracks = pandas.DataFrame(flatten(artists, "tracks"))
+    return {
+        "TotalNumberOfArtists": len(artists),
+        "FromDate": tracks["date"].min(),
+        "ToDate": tracks["date"].max()
+    }
+
+
 # "" if influences is None else list(map(lambda s: s.strip(), influences.split(",")))
 with open("artists.json") as artists_file:
     bands = json.load(artists_file)
@@ -85,6 +93,7 @@ with open("artists.json") as artists_file:
     artists_per_capita(bands)
     artists_location_table(bands)
     artist_hierarchial_graph(bands)
+    File.write_file("docs/_data/stats.json", json.dumps(stats_file(bands)))
 
     print("Band most played: " + bandMostPlays["name"])
     print("Band most played track: " + bandmostplayedtrack["name"])
