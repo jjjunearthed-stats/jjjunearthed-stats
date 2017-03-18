@@ -87,7 +87,7 @@ function packageHierarchy(classes) {
       if (name.length) {
         node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
 
-        if (node.parent.children != null) {
+        if (node.parent !== undefined && node.parent.children !== undefined) {
             node.parent.children.push(node);
         }
 
