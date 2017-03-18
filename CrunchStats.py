@@ -74,7 +74,7 @@ class ArtistStats:
         # Add missing liked artist todo: this is slow
         for artist in data:
             for like in artist["imports"]:
-                if not any(a["name"] == like for a in self.artists):
+                if not any(a["name"] == like for a in self.artists) and not any(d["name"] == like for d in data):
                     data.append({
                         "name": like,
                         "size": 100,
