@@ -67,18 +67,18 @@ class ArtistStats:
         for artist in self.artists:
             if artist["name"] is not None:
                 data.append({
-                    "name": artist["url"].strip(),
-                    "size": 10000,
+                    "name": artist["url"],
+                    "size": 1,
                     "imports": self.flatten_append(artist["likes"], "url")
                 })
 
         # Add missing liked artist todo: this is slow
         for artist in data:
             for like in artist["imports"]:
-                if not any(a["url"] == like for a in self.artists) and not any(d["name"] == like for d in data):
+                if not any(a["url"] == like for a in self.artists):
                     data.append({
                         "name": like,
-                        "size": 10000,
+                        "size": 1,
                         "imports": []
                     })
 
