@@ -1,4 +1,4 @@
-var diameter = 5000,
+var diameter = 20000,
     radius = diameter / 2,
     innerRadius = radius - 120;
 
@@ -86,11 +86,7 @@ function packageHierarchy(classes) {
       node = map[name] = data || {name: name, children: []};
       if (name.length) {
         node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
-
-        if (node.parent !== undefined && node.parent.children !== undefined) {
-            node.parent.children.push(node);
-        }
-
+        node.parent.children.push(node);
         node.key = name.substring(i + 1);
       }
     }
