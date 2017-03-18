@@ -18,7 +18,7 @@ class ArtistStats:
     def flatten_append(items, column):
         result = []
         for i in items:
-            result.append(i[column])
+            result.append(i[column].strip())
         return result
 
     @staticmethod
@@ -66,7 +66,7 @@ class ArtistStats:
         for artist in self.artists:
             if artist["name"] is not None:
                 data.append({
-                    "name": artist["name"],
+                    "name": artist["name"].strip(),
                     "size": 100,
                     "imports": self.flatten_append(artist["likes"], "name")
                 })
