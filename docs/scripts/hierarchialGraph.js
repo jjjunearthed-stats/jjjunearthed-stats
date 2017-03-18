@@ -84,7 +84,7 @@ function packageHierarchy(classes) {
     var node = map[name], i;
     if (!node) {
       node = map[name] = data || {name: name, children: []};
-      if (name.length && name != null) {
+      if (name.length) {
         node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
         node.parent.children.push(node);
         node.key = name.substring(i + 1);

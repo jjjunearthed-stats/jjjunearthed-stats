@@ -64,11 +64,12 @@ class ArtistStats:
     def hierarchial_graph(self):
         data = []
         for artist in self.artists:
-            data.append({
-                "name": artist["name"] or "",
-                "size": 100,
-                "imports": self.flatten_append(artist["likes"], "name")
-            })
+            if artist["name"] is not None:
+                data.append({
+                    "name": artist["name"],
+                    "size": 100,
+                    "imports": self.flatten_append(artist["likes"], "name")
+                })
 
         return data
 
