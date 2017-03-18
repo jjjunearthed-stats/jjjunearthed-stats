@@ -65,7 +65,7 @@ class ArtistStats:
         data = []
         for artist in self.artists:
             data.append({
-                "name": artist["name"],
+                "name": artist["name"] or "",
                 "size": 100,
                 "imports": self.flatten_append(artist["likes"], "name")
             })
