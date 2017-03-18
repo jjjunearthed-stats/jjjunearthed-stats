@@ -1,6 +1,6 @@
 # Triple J Unearthed Stats
 
-A statistical analysis of the artists on the Triple J Unearthed site.
+A statistical analysis of every artist on Triple J Unearthed.
 
 ## Web Scraper
 - [JJJUnearthedSpider.py](JJJUnearthed/spiders/JJJUnearthedSpider.py)
@@ -11,7 +11,7 @@ A web scraper which pulls artist, track and track review data from JJJ's Unearth
 ## Statistic Cruncher
 - [CrunchStats.py](CrunchStats.py)
 
-Crunches the artists in [artists.json](artists.json) and spits out the stats as json files into the [docs/data](docs/data) and [docs/_data](docs/_data) directories.
+Parses all the artists in [artists.json](artists.json) and spits out the stats as json files into the [docs/data](docs/data) (to generate the charts) and [docs/_data](docs/_data) (to be read server side from [Jekyll](https://jekyllrb.com/docs/datafiles/)).
 
 ## Charts
 - [charts.js](docs/scripts/charts.js)
