@@ -63,11 +63,12 @@ class ArtistStats:
 
     def hierarchial_graph(self):
         data = []
+        df = pandas.DataFrame(self.artists)
         for artist in self.artists:
             if artist["name"] is not None:
                 data.append({
                     "name": artist["url"].strip(),
-                    "size": 100,
+                    "size": 10000,
                     "imports": self.flatten_append(artist["likes"], "url")
                 })
 
@@ -77,7 +78,7 @@ class ArtistStats:
                 if not any(a["url"] == like for a in self.artists) and not any(d["name"] == like for d in data):
                     data.append({
                         "name": like,
-                        "size": 100,
+                        "size": 10000,
                         "imports": []
                     })
 
