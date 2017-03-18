@@ -15,6 +15,13 @@ class ArtistStats:
         return result
 
     @staticmethod
+    def flatten_append(items, column):
+        result = []
+        for i in items:
+            result.append(i[column])
+        return result
+
+    @staticmethod
     def per_capita_by_location(location, number):
         json_data = json.loads(open("data/locationPopulations.json").read())
         for l in json_data:
@@ -55,17 +62,21 @@ class ArtistStats:
         return data
 
     def hierarchial_graph(self):
-        File.delete_content("docs/data/artistHierarchialGraph.json")
+        data = []
+        for artist in self.artists:
+            data.append({
+                "name": artist["name"],
+                "size": 100,
+                "imports": self.flatten_append(artist["likes"], "name")
+            })
 
-        with open("docs/data/artistHierarchialGraph.json", "w") as file:
-            for artist in self.artists:
-                likes_json = json.dumps(artist["likes"], default=lambda o: o.__dict__)
-                json.dump({"name": artist["name"], "size": 100, "imports": [likes_json]}, file)
+        return data
 
     def stats_file(self):
         tracks = pandas.DataFrame(self.flatten(self.artists, "tracks"))
         return {
             "TotalNumberOfArtists": len(self.artists),
+            "TotalNumberOfTracks": len(tracks),
             "FromDate": tracks["date"].min(),
             "ToDate": tracks["date"].max()
         }
@@ -78,4 +89,4 @@ File.write_file("docs/data/artistsByLocation.json", stats.by_location())
 File.write_file("docs/data/artistsPerCapita.json", stats.per_capita())
 File.write_file("docs/data/artistsLocationTable.json", stats.location_table())
 File.write_file("docs/_data/stats.json", stats.stats_file())
-stats.hierarchial_graph()
+File.write_file("docs/data/artistHierarchialGraph.json", stats.hierarchial_graph())
