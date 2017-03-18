@@ -68,7 +68,7 @@ class ArtistStats:
                 data.append({
                     "name": artist["url"].strip(),
                     "size": 100,
-                    "imports": self.flatten_append(artist["likes"], "name")
+                    "imports": self.flatten_append(artist["likes"], "url")
                 })
 
         # Add missing liked artist todo: this is slow
