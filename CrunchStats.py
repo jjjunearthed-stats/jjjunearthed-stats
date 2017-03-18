@@ -71,9 +71,19 @@ class ArtistStats:
                     "imports": self.flatten_append(artist["likes"], "name")
                 })
 
+        # Add missing liked artist todo: this is slow
+        for artist in data:
+            for like in artist["imports"]:
+                if not any(a["name"] == like for a in self.artists):
+                    data.append({
+                        "name": like,
+                        "size": 100,
+                        "imports": []
+                    })
+
         return data
 
-    def stats_file(self):
+    def stats(self):
         tracks = pandas.DataFrame(self.flatten(self.artists, "tracks"))
         return {
             "TotalNumberOfArtists": len(self.artists),
@@ -89,5 +99,5 @@ with open("artists.json") as artists_file:
 File.write_file("docs/data/artistsByLocation.json", stats.by_location())
 File.write_file("docs/data/artistsPerCapita.json", stats.per_capita())
 File.write_file("docs/data/artistsLocationTable.json", stats.location_table())
-File.write_file("docs/_data/stats.json", stats.stats_file())
+File.write_file("docs/_data/stats.json", stats.stats())
 File.write_file("docs/data/artistHierarchialGraph.json", stats.hierarchial_graph())
