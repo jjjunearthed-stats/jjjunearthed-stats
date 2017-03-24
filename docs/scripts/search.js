@@ -1,14 +1,6 @@
 $(document).ready(function() {
-    var snapshot = undefined;
-    $.getJSON("data/artists.json", function(artistData) {
-        snapshot = Defiant.getSnapshot(artistData);
+    var database = firebase.database();
+    database.ref().once("6147").then(function(snapshot) {
+        alert(snapshot);
     });
-      $('button#Search').click(function() {
-          var xPath = $("#xPath").val();
-          var artists = search = JSON.search(snapshot, xPath);
-          $("#results").text("");
-          for (var i = 0; i < artists.length; i++) {
-              $("#results").append(artists[i]);
-          }
-      });
 });
