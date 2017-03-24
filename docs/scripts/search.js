@@ -1,17 +1,15 @@
 $(document).ready(function() {
-    google.charts.load('current', {packages:['geochart', 'table']});
-    google.charts.setOnLoadCallback(drawCharts);
-
+    $.getJSON("data/artists.json", function(artistData) {
+        var snapshot = Defiant.getSnapshot(data);
+    });
   function drawCharts() {
       $('button#Search').click(function() {
           var xPath = $("#xPath").val();
-          $.getJSON("data/artists.json", function(artistData) {
-              var artists = search = JSON.search(artistData, xPath);
-              $("#results").text("");
-              for (var i = 0; i < artists.length; i++) {
-                  $("#results").append(artists[i]);
-              }
-          });
+          var artists = search = JSON.search(snapshot, xPath);
+          $("#results").text("");
+          for (var i = 0; i < artists.length; i++) {
+              $("#results").append(artists[i]);
+          }
       });
   }
 });
