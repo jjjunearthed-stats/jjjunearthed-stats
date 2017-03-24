@@ -3,7 +3,7 @@ $(document).ready(function() {
     google.charts.setOnLoadCallback(drawCharts);
 
   function drawCharts() {
-      $('form').submit(function() {
+      $('button#Search').click(function() {
           var xPath = $("#xPath").val();
           $.getJSON("data/artists.json", function(artistData) {
               var artists = search = JSON.search(artistData, xPath);
