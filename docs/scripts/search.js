@@ -1,6 +1,7 @@
 $(document).ready(function() {
+    var snapshot = undefined;
     $.getJSON("data/artists.json", function(artistData) {
-        var snapshot = Defiant.getSnapshot(artistData);
+        snapshot = Defiant.getSnapshot(artistData);
     });
       $('button#Search').click(function() {
           var xPath = $("#xPath").val();
