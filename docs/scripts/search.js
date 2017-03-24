@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $.getJSON("data/artists.json", function(artistData) {
-        var snapshot = Defiant.getSnapshot(data);
+        var snapshot = Defiant.getSnapshot(artistData);
     });
   function drawCharts() {
       $('button#Search').click(function() {
