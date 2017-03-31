@@ -1,4 +1,5 @@
 import scrapy
+from scrapy.selector import HtmlXPathSelector
 import datetime
 from JJJUnearthed import XPath
 from JJJUnearthed import items
@@ -111,28 +112,28 @@ class JJJUnearthedSpider(scrapy.Spider):
 
     def get_tracks(self, response):
         track_names = response.css("div.track_name ::text").extract()
-        track_plays = response.xpath("//p[@class='plays'][1]/following-sibling::p/text()").extract()
-        track_downloads = response.xpath("//p[@class='downloads'][1]/following-sibling::p/text()").extract()
-        track_loves = response.xpath("//p[@class='loves'][1]/following-sibling::p/text()").extract()
-        track_shares = response.xpath("//p[@class='shares'][1]/following-sibling::p/text()").extract()
+        track_plays = response.xpath("//p[@class='plays'][1]/following-sibling::p")
+        track_downloads = response.xpath("//p[@class='downloads'][1]/following-sibling::p")
+        track_loves = response.xpath("//p[@class='loves'][1]/following-sibling::p")
+        track_shares = response.xpath("//p[@class='shares'][1]/following-sibling::p")
         track_links = response.xpath("//a[@class='download'][1]/@href").extract()
         track_dates = response.css("div.date_uploaded ::text").extract()
         track_avg_rating = response.css("p.stars_sm ::text").extract()
-        number_of_reviews = response.xpath("//p[@class='reviews'][1]/following-sibling::p/text()").extract()
+        number_of_reviews = response.xpath("//p[@class='reviews'][1]/following-sibling::p")
 
         tracks = [items.Track(
             name=name,
-            plays=track_plays[i],
-            downloads=track_downloads[i],
-            loves=track_loves[i],
-            number_of_reviews=number_of_reviews[i],
+            plays=0 if track_plays[i].xpath("text()").extract_first() is None else int(track_plays[i].xpath("text()").extract_first()),
+            downloads=0 if track_downloads[i].xpath("text()").extract_first() is None else int(track_downloads[i].xpath("text()").extract_first()),
+            loves=0 if track_loves[i].xpath("text()").extract_first() is None else int(track_loves[i].xpath("text()").extract_first()),
+            number_of_reviews=0 if number_of_reviews[i].xpath("text()").extract_first() is None else int(number_of_reviews[i].xpath("text()").extract_first()),
             link="https://www.triplejunearthed.com" + track_links[i],
             played_on_jjj=self.played_on_jjj(response, name),
             played_on_unearthed=self.played_on_unearthed(response, name),
             mature=self.mature(response, name),
             avg_rating=self.to_rating(track_avg_rating[i].strip()),
             date=self.to_date(track_dates[i].replace("Uploaded ", ""), "%d %b %y"),
-            shares=track_shares[i]) for i, name in enumerate(track_names)]
+            shares=0 if track_shares[i].xpath("text()").extract_first() is None else int(track_shares[i].xpath("text()").extract_first())) for i, name in enumerate(track_names)]
 
         for track in tracks:
             track["reviews"] = list(self.get_reviews(response, track["name"]))
