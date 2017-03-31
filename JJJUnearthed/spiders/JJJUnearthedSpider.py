@@ -19,6 +19,7 @@ class JJJUnearthedSpider(scrapy.Spider):
         artist_links = response.xpath(
             "//a[starts-with(@href, '/artist/') "
             "and not(contains(@href, 'track/')) "
+            "and not(substring(@href, string-length(@href) - string-length('/track') +1) = '/track') "
             "and not(contains(@href, 'review/'))][1]/@href").extract()
 
         self.logger.info("Parsing page")
@@ -68,7 +69,7 @@ class JJJUnearthedSpider(scrapy.Spider):
         self.logger.info("Parsing artist")
 
         return items.Artist(
-            name=name,
+            name=name.strip(),
             location=location,
             genre=genre,
             members="" if members is None else members.strip(),
