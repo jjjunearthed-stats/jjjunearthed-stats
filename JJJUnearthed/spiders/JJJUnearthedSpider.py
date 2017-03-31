@@ -1,5 +1,4 @@
 import scrapy
-from scrapy.selector import HtmlXPathSelector
 import datetime
 from JJJUnearthed import XPath
 from JJJUnearthed import items
@@ -7,11 +6,11 @@ from JJJUnearthed import items
 
 class JJJUnearthedSpider(scrapy.Spider):
     name = "JJJUnearthedSpider"
-    download_delay = 5
     spider_modules = ["JJJUnearthed.spiders"]
 
-    def __init__(self, from_index=0, to_index=90126, *args, **kwargs):
+    def __init__(self, from_index=0, to_index=90723, download_delay=5, *args, **kwargs):
         super(JJJUnearthedSpider, self).__init__(*args, **kwargs)
+        self.download_delay = download_delay
         self.start_urls = [
             "https://www.triplejunearthed.com/node?page=%d" % index for index in range(int(from_index), int(to_index))
         ]
