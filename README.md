@@ -2,12 +2,6 @@
 
 A statistical analysis of every artist on Triple J Unearthed.
 
-## Web Scraper
-- [JJJUnearthedSpider.py](JJJUnearthed/spiders/JJJUnearthedSpider.py)
-- [RunSpider.py](RunSpider.py) (to run the above spider locally)
-
-A web scraper which pulls artist, track and track review data from JJJ's Unearthed site. Uses the [Scrapy](https://scrapy.org) Python web scraping framework. Currently using [Scraping Hub](https://scrapinghub.com/) to run the spider and collect the artist data.
-
 ## Statistic Cruncher
 - [CrunchStats.py](CrunchStats.py)
 
