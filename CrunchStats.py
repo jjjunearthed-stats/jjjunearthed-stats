@@ -8,20 +8,6 @@ class ArtistStats:
         self.artists = a
 
     @staticmethod
-    def flatten(items, column):
-        result = []
-        for i in items:
-            result.extend(i[column])
-        return result
-
-    @staticmethod
-    def flatten_append(items, column):
-        result = []
-        for i in items:
-            result.append(i[column].strip())
-        return result
-
-    @staticmethod
     def per_capita_by_location(location, number):
         json_data = json.loads(open("data/locationPopulations.json").read())
         for l in json_data:
@@ -63,13 +49,12 @@ class ArtistStats:
 
     def hierarchial_graph(self):
         data = []
-        df = pandas.DataFrame(self.artists)
         for artist in self.artists:
             if artist["name"] is not None:
                 data.append({
                     "name": artist["url"],
                     "size": 1,
-                    "imports": self.flatten_append(artist["likes"], "url")
+                    "imports": [l["url"] for a in self.artists for l in a["likes"]]
                 })
 
         # Add missing liked artist todo: this is slow
@@ -85,7 +70,7 @@ class ArtistStats:
         return data
 
     def stats(self):
-        tracks = pandas.DataFrame(self.flatten(self.artists, "tracks"))
+        tracks = pandas.DataFrame([t for a in self.artists for t in a["tracks"]])
         return {
             "TotalNumberOfArtists": len(self.artists),
             "TotalNumberOfTracks": len(tracks),
