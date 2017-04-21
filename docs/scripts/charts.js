@@ -38,9 +38,9 @@ $(document).ready(function() {
           $.getJSON(dataUrl, function(json) {
             var data = google.visualization.arrayToDataTable(json);
             var options = {};
-            var chart = new google.charts.line(chartElement);
+            var chart = new google.charts.Line(chartElement);
 
-            chart.draw(data, options);
+            chart.draw(data, google.charts.Line.convertOptions(options));
           });
       });
       
