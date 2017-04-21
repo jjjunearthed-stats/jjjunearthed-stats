@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    google.charts.load('current', {packages:['geochart', 'table']});
+    google.charts.load('current', {packages:['geochart', 'table', 'line', 'corechart']});
     google.charts.setOnLoadCallback(drawCharts);
 
   function drawCharts() {
@@ -11,6 +11,34 @@ $(document).ready(function() {
             var data = google.visualization.arrayToDataTable(json);
             var options = {region: 'AU', displayMode: 'markers', colors:['blue', 'red']};
             var chart = new google.visualization.GeoChart(chartElement);
+
+            chart.draw(data, options);
+          });
+      });
+
+      $('.pieChart').each(function() {
+          var data = new google.visualization.DataTable();
+          var dataUrl = $(this).attr("data-url");
+          var chartElement = $(this)[0];
+
+          $.getJSON(dataUrl, function(json) {
+            var data = google.visualization.arrayToDataTable(json);
+            var options = {};
+            var chart = new google.visualization.PieChart(chartElement);
+
+            chart.draw(data, options);
+          });
+      });
+
+      $('.barChart').each(function() {
+          var data = new google.visualization.DataTable();
+          var dataUrl = $(this).attr("data-url");
+          var chartElement = $(this)[0];
+
+          $.getJSON(dataUrl, function(json) {
+            var data = google.visualization.arrayToDataTable(json);
+            var options = {};
+            var chart = new google.charts.line(chartElement);
 
             chart.draw(data, options);
           });
