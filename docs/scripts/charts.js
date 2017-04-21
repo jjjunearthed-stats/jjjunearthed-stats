@@ -30,7 +30,7 @@ $(document).ready(function() {
           });
       });
 
-      $('.barChart').each(function() {
+      $('.lineChart').each(function() {
           var data = new google.visualization.DataTable();
           var dataUrl = $(this).attr("data-url");
           var chartElement = $(this)[0];

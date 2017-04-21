@@ -28,7 +28,7 @@ class ArtistStats:
 
         data = [["City", "Number of artists"]]
         for name, size in group_by_location.iteritems():
-            data.append([name, int(size)])
+            data.append([name, size])
 
         return data
 
@@ -37,7 +37,7 @@ class ArtistStats:
 
         data = [["Location", "Artists per 100000 people"]]
         for name, size in group_by_location.iteritems():
-            location_per_capita = self.per_capita_by_location(name, int(size))
+            location_per_capita = self.per_capita_by_location(name, size)
 
             if location_per_capita is not None:
                 data.append([name, location_per_capita])
@@ -48,7 +48,7 @@ class ArtistStats:
         group_by_location = pandas.DataFrame(self.artists).groupby("location").size()
         data = []
         for name, size in group_by_location.iteritems():
-            data.append([name, int(size), self.per_capita_by_location(name, int(size))])
+            data.append([name, size, self.per_capita_by_location(name, size)])
 
         return data
 
@@ -76,10 +76,17 @@ class ArtistStats:
                        for t in filter(track_condition, a["tracks"])]
 
         grouping = pandas.DataFrame(genre_years).groupby(["year", "genre"]).size()
+        years = grouping.keys().levels[0]
+        genres = grouping.keys().levels[1]
 
-        data = [["Year", "Genre", "Number Of Tracks"]]
-        for group, size in grouping.iteritems():
-            data.append([group[0], group[1], int(size)])
+        columns = ["Year"]
+        columns.extend(genres)
+        data = [columns]
+
+        for year in years:
+            sums = [year]
+            sums.extend(grouping[year])
+            data.append(sums)
         return data
 
     def hierarchial_graph(self):
