@@ -70,21 +70,24 @@ class ArtistStats:
 
         return data
 
-    def genres_per_year(self, track_condition=lambda t: True):
+    def genres_per_year(self, track_condition=lambda t: True, include_current_year=False):
         genre_years = [{"genre": g, "year": self.to_date(t["date"]).year}
                        for a in self.artists for g in a["genre"]
                        for t in filter(track_condition, a["tracks"])]
 
         grouping = pandas.DataFrame(genre_years).groupby(["year", "genre"]).size()
-        years = grouping.keys().levels[0]
-        genres = grouping.keys().levels[1]
+        years = list(grouping.keys().levels[0])
+        genres = list(grouping.keys().levels[1])
 
         columns = ["Year"]
         columns.extend(genres)
         data = [columns]
 
+        if include_current_year is False:
+            years.pop()
+
         for year in years:
-            sums = [year]
+            sums = [str(year)]
             sums.extend(grouping[year])
             data.append(sums)
         return data
