@@ -3,14 +3,13 @@ $(document).ready(function() {
     google.charts.setOnLoadCallback(drawCharts);
 
   function drawCharts() {
-
-
       $('.genreSelect').change(function(){
           var genre = $(this).val();
           var chartId = $(this).attr("chart-id");
+          var dataPrefix = $(this).attr("data-prefix");
           var chartElement = $("#"+chartId)[0];
 
-          $.getJSON("data/mostPopularInfluences" + genre + ".json", function(json) {
+          $.getJSON(dataPrefix + genre + ".json", function(json) {
             var data = google.visualization.arrayToDataTable(json);
             var options = {
                 orientation: "vertical"
