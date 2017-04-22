@@ -12,10 +12,12 @@ $(document).ready(function() {
 
           $.getJSON("data/mostPopularInfluences" + genre + ".json", function(json) {
             var data = google.visualization.arrayToDataTable(json);
-            var options = {region: 'AU', displayMode: 'markers', colors:['blue', 'red']};
-            var chart = new google.visualization.GeoChart(chartElement);
+            var options = {
+                orientation: "vertical"
+            };
+            var chart = new google.charts.Bar(chartElement);
 
-            chart.draw(data, options);
+            chart.draw(data, google.charts.Bar.convertOptions(options));
           });
       });
 
