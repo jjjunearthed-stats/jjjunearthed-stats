@@ -23,7 +23,9 @@ $(document).ready(function() {
 
           $.getJSON(dataUrl, function(json) {
             var data = google.visualization.arrayToDataTable(json);
-            var options = {};
+            var options = {
+                orientation: "vertical"
+            };
             var chart = new google.charts.Bar(chartElement);
 
             chart.draw(data, google.charts.Bar.convertOptions(options));
