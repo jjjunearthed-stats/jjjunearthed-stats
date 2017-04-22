@@ -74,7 +74,7 @@ class ArtistStats:
 
     def most_popular_influences(self, top_number=30):
         influences = [{"Artist": i} for a in self.artists
-                      for i in [inf.strip().lower() for inf in a["influences"].split(",")]]
+                      for i in [inf.strip().lower() for inf in filter(lambda s: s != "", a["influences"].split(","))]]
 
         grouping = pandas.DataFrame(influences).groupby("Artist").size().sort_values(ascending=False)[:top_number]
 
