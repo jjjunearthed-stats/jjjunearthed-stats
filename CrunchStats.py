@@ -59,6 +59,9 @@ class ArtistStats:
         percentage = len(artists_played_on_jjj) / len(self.artists) * 100
         return round(percentage, 2)
 
+    def all_genres(self):
+        return set([g for a in self.artists for g in a["genre"]])
+
     def genre_percentages(self):
         genres = [g for a in self.artists
                   for g in a["genre"]]
@@ -72,8 +75,11 @@ class ArtistStats:
 
         return data
 
-    def most_popular_influences(self, top_number=30):
-        influences = [{"Artist": i} for a in self.artists
+    def artists_by_genre(self, genre):
+        return filter(lambda a: genre in a["genre"], self.artists)
+
+    def most_popular_influences(self, genre=None, top_number=30):
+        influences = [{"Artist": i} for a in (self.artists_by_genre(genre) if genre is not None else self.artists)
                       for i in [inf.strip().lower() for inf in filter(lambda s: s != "", a["influences"].split(","))]]
 
         grouping = pandas.DataFrame(influences).groupby("Artist").size().sort_values(ascending=False)[:top_number]
@@ -84,8 +90,8 @@ class ArtistStats:
 
         return data
 
-    def most_popular_likes(self, top_number=30):
-        influences = [{"Artist": l["name"]} for a in self.artists
+    def most_popular_likes(self, genre=None, top_number=30):
+        influences = [{"Artist": l["name"]} for a in (self.artists_by_genre(genre) if genre is not None else self.artists)
                       for l in a["likes"]]
 
         grouping = pandas.DataFrame(influences).groupby("Artist").size().sort_values(ascending=False)[:top_number]
@@ -167,6 +173,15 @@ File.write_file("docs/data/artistsLocationTable.json", stats.location_table())
 File.write_file("docs/_data/stats.json", stats.stats())
 File.write_file("docs/data/mostPopularInfluences.json", stats.most_popular_influences())
 File.write_file("docs/data/mostPopularLikes.json", stats.most_popular_likes())
+
+all_genres = stats.all_genres()
+
+for g in all_genres:
+    File.write_file("docs/data/mostPopularInfluences" + g.replace(" ", "") + ".json", stats.most_popular_influences(g))
+
+for g in all_genres:
+    File.write_file("docs/data/mostPopularLikes" + g.replace(" ", "") + ".json", stats.most_popular_likes(g))
+
 File.write_file("docs/data/genrePercentages.json", stats.genre_percentages())
 File.write_file("docs/data/genresPerYear.json", stats.group_by_artist_property_per_year("genre"))
 File.write_file("docs/data/genresPlayedOnJJJPerYear.json", stats.group_by_artist_property_per_year("genre", lambda t: t["played_on_jjj"]))

@@ -3,6 +3,22 @@ $(document).ready(function() {
     google.charts.setOnLoadCallback(drawCharts);
 
   function drawCharts() {
+
+
+      $('.genreSelect').change(function(){
+          var genre = $(this).val();
+          var chartId = $(this).attr("chart-id");
+          var chartElement = $("#"+chartId)[0];
+
+          $.getJSON("data/mostPopularInfluences" + genre + ".json", function(json) {
+            var data = google.visualization.arrayToDataTable(json);
+            var options = {region: 'AU', displayMode: 'markers', colors:['blue', 'red']};
+            var chart = new google.visualization.GeoChart(chartElement);
+
+            chart.draw(data, options);
+          });
+      });
+
       $('.geoMap').each(function() {
           var dataUrl = $(this).attr("data-url");
           var chartElement = $(this)[0];
@@ -87,4 +103,5 @@ $(document).ready(function() {
           });
       });
   }
+
 });
