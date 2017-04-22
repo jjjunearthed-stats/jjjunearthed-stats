@@ -1,5 +1,9 @@
 import json
+from functools import reduce
+
 import pandas
+import operator
+
 import File
 from datetime import datetime
 from itertools import groupby
@@ -70,12 +74,13 @@ class ArtistStats:
 
         return data
 
-    def genres_per_year(self, track_condition=lambda t: True, include_current_year=False):
-        genre_years = [{"genre": g, "year": self.to_date(t["date"]).year}
-                       for a in self.artists for g in a["genre"]
+    def group_by_artist_property_per_year(self, artist_property, track_condition=lambda t: True, include_current_year=False):
+        genre_years = [{artist_property: g, "year": self.to_date(t["date"]).year}
+                       for a in self.artists
+                       for g in (a[artist_property] if isinstance(a[artist_property], list) else [a[artist_property]])
                        for t in filter(track_condition, a["tracks"])]
 
-        grouping = pandas.DataFrame(genre_years).groupby(["year", "genre"]).size()
+        grouping = pandas.DataFrame(genre_years).groupby(["year", artist_property]).size()
         years = list(grouping.keys().levels[0])
         genres = list(grouping.keys().levels[1])
 
@@ -134,11 +139,15 @@ class ArtistStats:
 with open("artists.json") as artists_file:
     stats = ArtistStats(json.load(artists_file))
 
+red = reduce(lambda x, y: x+y, ["1", "1", "1"])
+
 File.write_file("docs/data/artistsByLocation.json", stats.by_location())
 File.write_file("docs/data/artistsPerCapita.json", stats.per_capita())
 File.write_file("docs/data/artistsLocationTable.json", stats.location_table())
 File.write_file("docs/_data/stats.json", stats.stats())
 File.write_file("docs/data/genrePercentages.json", stats.genre_percentages())
-File.write_file("docs/data/genresPerYear.json", stats.genres_per_year())
-File.write_file("docs/data/genresPlayedOnJJJPerYear.json", stats.genres_per_year(lambda t: t["played_on_jjj"]))
-File.write_file("docs/data/genresPlayedOnUnearthedPerYear.json", stats.genres_per_year(lambda t: t["played_on_unearthed"]))
+File.write_file("docs/data/genresPerYear.json", stats.group_by_artist_property_per_year("genre"))
+File.write_file("docs/data/genresPlayedOnJJJPerYear.json", stats.group_by_artist_property_per_year("genre", lambda t: t["played_on_jjj"]))
+File.write_file("docs/data/locationsPlayedOnJJJPerYear.json", stats.group_by_artist_property_per_year("location", lambda t: t["played_on_jjj"]))
+File.write_file("docs/data/genresPlayedOnUnearthedPerYear.json", stats.group_by_artist_property_per_year("genre", lambda t: t["played_on_unearthed"]))
+File.write_file("docs/data/locationsPlayedOnUnearthedPerYear.json", stats.group_by_artist_property_per_year("location", lambda t: t["played_on_unearthed"]))
