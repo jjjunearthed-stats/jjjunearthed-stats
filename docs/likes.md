@@ -3,7 +3,7 @@
 
 # Most Popular Influences
 <select name="Genre" class="genreSelect" chart-id="mostpopularinfluences">
-    <option value="All">All</option>
+    <option value="">All</option>
     <option value="Dance">Dance</option>
     <option value="Electronic">Electronic</option>
     <option value="HipHop">HipHop</option>
