@@ -72,11 +72,11 @@ class ArtistStats:
 
         return data
 
-    def most_popular_influences(self):
+    def most_popular_influences(self, top_number=30):
         influences = [{"Artist": i} for a in self.artists
                       for i in [inf.strip().lower() for inf in a["influences"].split(",")]]
 
-        grouping = pandas.DataFrame(influences).groupby("Artist").size().sort_values(ascending=False)
+        grouping = pandas.DataFrame(influences).groupby("Artist").size().sort_values(ascending=False)[:top_number]
 
         data = [["Artist", "Number"]]
         for name, size in grouping.iteritems():
@@ -84,11 +84,11 @@ class ArtistStats:
 
         return data
 
-    def most_popular_likes(self):
+    def most_popular_likes(self, top_number=30):
         influences = [{"Artist": l["name"]} for a in self.artists
                       for l in a["likes"]]
 
-        grouping = pandas.DataFrame(influences).groupby("Artist").size().sort_values(ascending=False)
+        grouping = pandas.DataFrame(influences).groupby("Artist").size().sort_values(ascending=False)[:top_number]
 
         data = [["Artist", "Number"]]
         for name, size in grouping.iteritems():

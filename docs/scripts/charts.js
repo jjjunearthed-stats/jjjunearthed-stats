@@ -24,7 +24,7 @@ $(document).ready(function() {
           $.getJSON(dataUrl, function(json) {
             var data = google.visualization.arrayToDataTable(json);
             var options = {};
-            var chart = new google.visualization.Bar(chartElement);
+            var chart = new google.charts.Bar(chartElement);
 
             chart.draw(data, google.charts.Bar.convertOptions(options));
           });
