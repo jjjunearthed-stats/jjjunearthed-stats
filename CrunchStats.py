@@ -79,17 +79,22 @@ class ArtistStats:
         years = list(grouping.keys().levels[0])
         genres = list(grouping.keys().levels[1])
 
-        columns = ["Year"]
-        columns.extend(genres)
-        data = [columns]
+        data = [["Year"] + genres]
 
         if include_current_year is False:
             years.pop()
 
         for year in years:
-            sums = [str(year)]
-            sums.extend(grouping[year])
-            data.append(sums)
+            year_counts = [str(year)]
+            year_grouping = grouping[year]
+
+            for genre in genres:
+                if genre in year_grouping:
+                    year_counts.append(year_grouping[genre])
+                else:
+                    year_counts.append(0)
+
+            data.append(year_counts)
         return data
 
     def hierarchial_graph(self):

@@ -6,3 +6,6 @@
 
 # Genres played on JJJ per Year
 <div class="lineChart" data-url="data/genresPlayedOnJJJPerYear.json" style="width: 900px; height: 500px;"></div>
+
+# Genres played on Unearthed per Year
+<div class="lineChart" data-url="data/genresPlayedOnUnearthedPerYear.json" style="width: 900px; height: 500px;"></div>
