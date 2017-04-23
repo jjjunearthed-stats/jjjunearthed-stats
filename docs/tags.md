@@ -1,5 +1,5 @@
-# Most Popular Likes
-<select class="genreSelect" chart-id="mostpopularlikes" data-prefix="data/mostPopularLikes">
+# Most Popular Tags
+<select class="genreSelect" chart-id="mostpopulartags" data-prefix="data/mostPopularTags">
     <option value="">All</option>
     <option value="Dance">Dance</option>
     <option value="Electronic">Electronic</option>
@@ -11,4 +11,4 @@
     <option value="Rock">Rock</option>
     <option value="Roots">Roots</option>
 </select>
-<div id="mostpopularlikes" class="barChart" data-url="data/mostPopularLikes.json" style="width: 900px; height: 900px;"></div>
+<div id="mostpopulartags" class="barChart" data-url="data/mostPopularTags.json" style="width: 900px; height: 900px;"></div>
