@@ -12,7 +12,8 @@ $(document).ready(function() {
           $.getJSON(dataPrefix + genre + ".json", function(json) {
             var data = google.visualization.arrayToDataTable(json);
             var options = {
-                orientation: "vertical"
+                orientation: "vertical",
+                legend: {position: "none"}
             };
             var chart = new google.charts.Bar(chartElement);
 
@@ -41,7 +42,8 @@ $(document).ready(function() {
           $.getJSON(dataUrl, function(json) {
             var data = google.visualization.arrayToDataTable(json);
             var options = {
-                orientation: "vertical"
+                orientation: "vertical",
+                legend: {position: "none"}
             };
             var chart = new google.charts.Bar(chartElement);
 
