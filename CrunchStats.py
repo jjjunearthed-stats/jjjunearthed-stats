@@ -78,7 +78,7 @@ class ArtistStats:
     def artists_by_genre(self, genre):
         return filter(lambda a: genre in a["genre"], self.artists)
 
-    def most_popular_influences(self, genre=None, top_number=30):
+    def most_popular_influences(self, genre=None, top_number=50):
         influences = [{"Artist": i} for a in (self.artists_by_genre(genre) if genre is not None else self.artists)
                       for i in [inf.strip().lower() for inf in filter(lambda s: s != "", a["influences"].split(","))]]
 
@@ -90,7 +90,7 @@ class ArtistStats:
 
         return data
 
-    def most_popular_likes(self, genre=None, top_number=30):
+    def most_popular_likes(self, genre=None, top_number=50):
         influences = [{"Artist": l["name"]} for a in (self.artists_by_genre(genre) if genre is not None else self.artists)
                       for l in a["likes"]]
 
