@@ -3,7 +3,7 @@
     <option value="">All</option>
     <option value="Dance">Dance</option>
     <option value="Electronic">Electronic</option>
-    <option value="HipHop">HipHop</option>
+    <option value="HipHop">Hip Hop</option>
     <option value="Indie">Indie</option>
     <option value="Metal">Metal</option>
     <option value="Pop">Pop</option>
@@ -18,7 +18,7 @@
     <option value="">All</option>
     <option value="Dance">Dance</option>
     <option value="Electronic">Electronic</option>
-    <option value="HipHop">HipHop</option>
+    <option value="HipHop">Hip Hop</option>
     <option value="Indie">Indie</option>
     <option value="Metal">Metal</option>
     <option value="Pop">Pop</option>
