@@ -44,12 +44,20 @@ class ArtistStats:
 
         return data
 
-    def percentage_of_artists(self, track_condition=lambda t: True):
-        artists_played_on_jjj = [a for a in self.artists
-                                 for t in filter(track_condition, a["tracks"])]
+    def percentage_of_artists(self, genre=None, track_condition=lambda t: True):
+        artists_played = [a for a in (self.artists_by_genre(genre) if genre is not None else self.artists)
+                          for t in filter(track_condition, a["tracks"])]
 
-        percentage = len(artists_played_on_jjj) / len(self.artists) * 100
+        percentage = len(artists_played) / len(self.artists) * 100
         return round(percentage, 2)
+
+    def percentage_of_artists_played_per_genre(self, track_condition=lambda t: True):
+        all_genres = stats.all_genres()
+        data = [["Genre", "Percentage"]]
+        for g in all_genres:
+            data.append([g, self.percentage_of_artists(g, track_condition)])
+
+        return data
 
     def all_genres(self):
         return set([g for a in self.artists for g in a["genre"]])
@@ -158,14 +166,17 @@ class ArtistStats:
 
     def stats(self):
         tracks = pandas.DataFrame([t for a in self.artists for t in a["tracks"]])
-        return {
+
+        stats_container = {
             "TotalNumberOfArtists": len(self.artists),
             "TotalNumberOfTracks": len(tracks),
             "FromDate": tracks["date"].min(),
             "ToDate": tracks["date"].max(),
-            "PercentageOfArtistsPlayedOnJJJ": self.percentage_of_artists(lambda t: t["played_on_jjj"]),
-            "PercentageOfArtistsPlayedOnUnearthed": self.percentage_of_artists(lambda t: t["played_on_unearthed"]),
+            "PercentageOfArtistsPlayedOnJJJ": self.percentage_of_artists(track_condition=lambda t: t["played_on_jjj"]),
+            "PercentageOfArtistsPlayedOnUnearthed": self.percentage_of_artists(track_condition=lambda t: t["played_on_unearthed"]),
         }
+
+        return stats_container
 
 
 with open("artists.json") as artists_file:
@@ -191,6 +202,12 @@ for g in all_genres:
     File.write_file("docs/data/mostPopularTags" + g.replace(" ", "") + ".json", stats.most_popular_tags(g))
 
 File.write_file("docs/data/genrePercentages.json", stats.genre_percentages())
+
+File.write_file("docs/data/genresPlayedOnJJJ.json",
+                stats.percentage_of_artists_played_per_genre(lambda t: t["played_on_jjj"]))
+File.write_file("docs/data/genresPlayedOnUnearthed.json",
+                stats.percentage_of_artists_played_per_genre(lambda t: t["played_on_unearthed"]))
+
 File.write_file("docs/data/genresPerYear.json", stats.group_by_artist_property_per_year("genre"))
 File.write_file("docs/data/genresPlayedOnJJJPerYear.json",
                 stats.group_by_artist_property_per_year("genre", lambda t: t["played_on_jjj"]))
