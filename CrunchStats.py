@@ -102,6 +102,18 @@ class ArtistStats:
 
         return data
 
+    def most_popular_tags(self, genre=None, top_number=50):
+        tags = [{"Tag": t} for a in (self.artists_by_genre(genre) if genre is not None else self.artists)
+                for t in a["tags"]]
+
+        grouping = pandas.DataFrame(tags).groupby("Tag").size().sort_values(ascending=False)[:top_number]
+
+        data = [["Tag", "Number"]]
+        for name, size in grouping.iteritems():
+            data.append([name, size])
+
+        return data
+
     def group_by_artist_property_per_year(self, artist_property, track_condition=lambda t: True, include_current_year=False):
         genre_years = [{artist_property: g, "year": self.to_date(t["date"]).year}
                        for a in self.artists
@@ -173,6 +185,7 @@ File.write_file("docs/data/artistsLocationTable.json", stats.location_table())
 File.write_file("docs/_data/stats.json", stats.stats())
 File.write_file("docs/data/mostPopularInfluences.json", stats.most_popular_influences())
 File.write_file("docs/data/mostPopularLikes.json", stats.most_popular_likes())
+File.write_file("docs/data/mostPopularTags.json", stats.most_popular_tags())
 
 all_genres = stats.all_genres()
 
@@ -181,6 +194,9 @@ for g in all_genres:
 
 for g in all_genres:
     File.write_file("docs/data/mostPopularLikes" + g.replace(" ", "") + ".json", stats.most_popular_likes(g))
+
+for g in all_genres:
+    File.write_file("docs/data/mostPopularTags" + g.replace(" ", "") + ".json", stats.most_popular_tags(g))
 
 File.write_file("docs/data/genrePercentages.json", stats.genre_percentages())
 File.write_file("docs/data/genresPerYear.json", stats.group_by_artist_property_per_year("genre"))
