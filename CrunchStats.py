@@ -79,10 +79,10 @@ class ArtistStats:
         return data
 
     def artists_by_genre(self, genre):
-        return filter(lambda a: genre in a["genre"], self.artists)
+        return filter(lambda a: genre in a["genre"], self.artists) if genre is not None else self.artists
 
     def most_popular_influences(self, genre=None, top_number=50):
-        influences = [{"Artist": i} for a in (self.artists_by_genre(genre) if genre is not None else self.artists)
+        influences = [{"Artist": i} for a in self.artists_by_genre(genre)
                       for i in [inf.strip().lower() for inf in filter(lambda s: s != "", a["influences"].split(","))]]
 
         grouping = pandas.DataFrame(influences).groupby("Artist").size().sort_values(ascending=False)[:top_number]
@@ -94,7 +94,7 @@ class ArtistStats:
         return data
 
     def most_popular_likes(self, genre=None, top_number=50):
-        influences = [{"Artist": l["name"]} for a in (self.artists_by_genre(genre) if genre is not None else self.artists)
+        influences = [{"Artist": l["name"]} for a in self.artists_by_genre(genre)
                       for l in a["likes"]]
 
         grouping = pandas.DataFrame(influences).groupby("Artist").size().sort_values(ascending=False)[:top_number]
@@ -106,7 +106,7 @@ class ArtistStats:
         return data
 
     def most_popular_tags(self, genre=None, top_number=50):
-        tags = [{"Tag": t} for a in (self.artists_by_genre(genre) if genre is not None else self.artists)
+        tags = [{"Tag": t} for a in self.artists_by_genre(genre)
                 for t in a["tags"]]
 
         grouping = pandas.DataFrame(tags).groupby("Tag").size().sort_values(ascending=False)[:top_number]
