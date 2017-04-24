@@ -1,7 +1,6 @@
 import json
 import pandas
 import File
-from LocationPopulations import LocationPopulations
 from datetime import datetime
 from itertools import groupby
 
@@ -9,11 +8,15 @@ from itertools import groupby
 class ArtistStats:
     def __init__(self, a):
         self.artists = a
-        self.locationPopulations = LocationPopulations()
+        self.locationPopulations = json.loads(open("data/locationPopulations.json").read())
 
     @staticmethod
     def to_date(date):
         return datetime.strptime(date, "%Y-%m-%d")
+
+    def per_capita(self, location, number):
+        population = self.locationPopulations[location] if location in self.locationPopulations else None
+        return round(number / population * 100000) if population is not None else None
 
     def by_location(self):
         group_by_location = pandas.DataFrame(self.artists).groupby("location").size()
@@ -24,12 +27,12 @@ class ArtistStats:
 
         return data
 
-    def per_capita(self):
+    def per_capita_map(self):
         group_by_location = pandas.DataFrame(self.artists).groupby("location").size()
 
         data = [["Location", "Artists per 100000 people"]]
         for name, size in group_by_location.iteritems():
-            location_per_capita = self.locationPopulations.per_capita(name, size)
+            location_per_capita = self.per_capita(name, size)
 
             if location_per_capita is not None:
                 data.append([name, location_per_capita])
@@ -40,7 +43,7 @@ class ArtistStats:
         group_by_location = pandas.DataFrame(self.artists).groupby("location").size()
         data = []
         for name, size in group_by_location.iteritems():
-            data.append([name, size, self.locationPopulations.per_capita(name, size)])
+            data.append([name, size, self.per_capita(name, size)])
 
         return data
 
@@ -183,7 +186,7 @@ with open("artists.json") as artists_file:
     stats = ArtistStats(json.load(artists_file))
 
 File.write_file("docs/data/artistsByLocation.json", stats.by_location())
-File.write_file("docs/data/artistsPerCapita.json", stats.per_capita())
+File.write_file("docs/data/artistsPerCapita.json", stats.per_capita_map())
 File.write_file("docs/data/artistsLocationTable.json", stats.location_table())
 File.write_file("docs/_data/stats.json", stats.stats())
 File.write_file("docs/data/mostPopularInfluences.json", stats.most_popular_influences())
