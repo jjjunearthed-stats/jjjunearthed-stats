@@ -15,8 +15,10 @@ class ArtistStats:
         return datetime.strptime(date, "%Y-%m-%d")
 
     def per_capita(self, location, number):
-        population = self.locationPopulations[location] if location in self.locationPopulations else None
-        return round(number / population * 100000) if population is not None else None
+        if location not in self.locationPopulations:
+            return None
+
+        return round(number / self.locationPopulations[location] * 100000)
 
     def by_location(self):
         group_by_location = pandas.DataFrame(self.artists).groupby("location").size()
