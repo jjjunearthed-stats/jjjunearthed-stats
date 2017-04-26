@@ -6,9 +6,12 @@ from itertools import groupby
 
 
 class ArtistStats:
-    def __init__(self, a):
-        self.artists = a
-        self.locationPopulations = json.loads(open("data/locationPopulations.json").read())
+    def __init__(self):
+        with open("data/artists.json") as f:
+            self.artists = json.loads(f.read())
+
+        with open("data/locationPopulations.json") as f:
+            self.locationPopulations = json.loads(f.read())
 
     @staticmethod
     def to_date(date):
@@ -50,7 +53,7 @@ class ArtistStats:
         return data
 
     def percentage_of_artists(self, genre=None, track_condition=lambda t: True):
-        artists_played = [a for a in (self.artists_by_genre(genre) if genre is not None else self.artists)
+        artists_played = [a for a in self.artists_by_genre(genre)
                           for t in filter(track_condition, a["tracks"])]
 
         percentage = len(artists_played) / len(self.artists) * 100
@@ -184,8 +187,7 @@ class ArtistStats:
         return stats_container
 
 
-with open("artists.json") as artists_file:
-    stats = ArtistStats(json.load(artists_file))
+stats = ArtistStats()
 
 File.write_file("docs/data/artistsByLocation.json", stats.by_location())
 File.write_file("docs/data/artistsPerCapita.json", stats.per_capita_map())
