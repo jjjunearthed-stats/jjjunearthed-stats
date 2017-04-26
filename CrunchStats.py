@@ -1,7 +1,7 @@
 import json
 import pandas
 import File
-from datetime import datetime
+import Date
 from itertools import groupby
 
 
@@ -12,10 +12,6 @@ class ArtistStats:
 
         with open("data/locationPopulations.json") as f:
             self.locationPopulations = json.loads(f.read())
-
-    @staticmethod
-    def to_date(date):
-        return datetime.strptime(date, "%Y-%m-%d")
 
     def per_capita(self, location, number):
         if location not in self.locationPopulations:
@@ -53,8 +49,7 @@ class ArtistStats:
         return data
 
     def percentage_of_artists(self, genre=None, track_condition=lambda t: True):
-        artists_played = [a for a in self.artists_by_genre(genre)
-                          for t in filter(track_condition, a["tracks"])]
+        artists_played = set([a["url"] for a in self.artists_by_genre(genre) for t in filter(track_condition, a["tracks"])])
 
         percentage = len(artists_played) / len(self.artists) * 100
         return round(percentage, 2)
@@ -123,7 +118,7 @@ class ArtistStats:
         return data
 
     def group_by_artist_property_per_year(self, artist_property, track_condition=lambda t: True, include_current_year=False):
-        genre_years = [{artist_property: g, "year": self.to_date(t["date"]).year}
+        genre_years = [{artist_property: g, "year": Date.parse(t["date"]).year}
                        for a in self.artists
                        for g in (a[artist_property] if isinstance(a[artist_property], list) else [a[artist_property]])
                        for t in filter(track_condition, a["tracks"])]
@@ -182,6 +177,7 @@ class ArtistStats:
             "ToDate": tracks["date"].max(),
             "PercentageOfArtistsPlayedOnJJJ": self.percentage_of_artists(track_condition=lambda t: t["played_on_jjj"]),
             "PercentageOfArtistsPlayedOnUnearthed": self.percentage_of_artists(track_condition=lambda t: t["played_on_unearthed"]),
+            "LastUpdated": Date.now()
         }
 
         return stats_container
