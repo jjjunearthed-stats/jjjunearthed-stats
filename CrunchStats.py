@@ -13,6 +13,11 @@ class ArtistStats:
         with open("data/locationPopulations.json") as f:
             self.locationPopulations = json.loads(f.read())
 
+        with open("data/locationOutliers.json") as f:
+            self.locationOutliers = json.loads(f.read())
+
+        self.df = pandas.DataFrame(self.artists)
+
     def per_capita(self, location, number):
         if location not in self.locationPopulations:
             return None
@@ -24,7 +29,8 @@ class ArtistStats:
 
         data = [["City", "Number of artists"]]
         for name, size in group_by_location.iteritems():
-            data.append([name, size])
+            if name not in self.locationOutliers:
+                data.append([name, size])
 
         return data
 
@@ -44,12 +50,13 @@ class ArtistStats:
         group_by_location = pandas.DataFrame(self.artists).groupby("location").size()
         data = []
         for name, size in group_by_location.iteritems():
-            data.append([name, size, self.per_capita(name, size)])
+            if name not in self.locationOutliers:
+                data.append([name, size, self.per_capita(name, size)])
 
         return data
 
     def percentage_of_artists(self, genre=None, track_condition=lambda t: True):
-        artists_played = set([a["url"] for a in self.artists_by_genre(genre) for t in filter(track_condition, a["tracks"])])
+        artists_played = [a for a in self.artists_by_genre(genre) if any(filter(track_condition, a["tracks"]))]
 
         percentage = len(artists_played) / len(self.artists) * 100
         return round(percentage, 2)
@@ -79,7 +86,7 @@ class ArtistStats:
         return data
 
     def artists_by_genre(self, genre):
-        return filter(lambda a: genre in a["genre"], self.artists) if genre is not None else self.artists
+        return [a for a in self.artists if genre in a["genre"]] if genre is not None else self.artists
 
     def most_popular_influences(self, genre=None, top_number=50):
         influences = [{"Artist": i} for a in self.artists_by_genre(genre)
@@ -117,7 +124,11 @@ class ArtistStats:
 
         return data
 
-    def group_by_artist_property_per_year(self, artist_property, track_condition=lambda t: True, include_current_year=False):
+    def group_by_artist_property_per_year(self,
+                                          artist_property,
+                                          track_condition=lambda t: True,
+                                          include_current_year=False):
+
         genre_years = [{artist_property: g, "year": Date.parse(t["date"]).year}
                        for a in self.artists
                        for g in (a[artist_property] if isinstance(a[artist_property], list) else [a[artist_property]])
@@ -155,7 +166,7 @@ class ArtistStats:
                     "imports": [l["url"] for a in self.artists for l in a["likes"]]
                 })
 
-        # Add missing liked artist todo: this is slow
+        # Add missing liked artist
         for artist in data:
             for like in artist["imports"]:
                 if not any(a["url"] == like for a in self.artists):
