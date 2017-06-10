@@ -15,5 +15,5 @@
     id="mostpopularlikes" 
     class="chart" 
     chart-type="bar"
-    data-url="data/mostPopularLikes.json" 
+    data="data/mostPopularLikes.json" 
     style="width: 900px; height: 900px;"></div>
