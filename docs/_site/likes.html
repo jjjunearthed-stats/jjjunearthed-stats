@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/assets/css/style.css?v=34a0fc67811c8586369521842f6e6662fbb1179f">
+    <link rel="stylesheet" href="styles/site.css">
     <link rel="shortcut icon" href="favicon.ico">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKzMZ4n6JHJwV0uEaeculwuqnys0RIxrQ" type="text/javascript"></script>
@@ -29,7 +30,9 @@
     </section>
 
     <section class="main-content">
-      <h1 id="most-popular-likes">Most Popular Likes</h1>
+      <h1 id="likes">Likes</h1>
+<p>The most popular likes for artists per genre:</p>
+
 <p><select class="chartSelect" chart-id="mostpopularlikes">
     <option value="data/mostPopularLikes.json">All</option>
     <option value="data/mostPopularLikesDance.json">Dance</option>
@@ -42,7 +45,7 @@
     <option value="data/mostPopularLikesRock.json">Rock</option>
     <option value="data/mostPopularLikesRoots.json">Roots</option>
 </select></p>
-<div id="mostpopularlikes" class="chart" chart-type="bar" data="data/mostPopularLikes.json" style="width: 900px; height: 900px;"></div>
+<div id="mostpopularlikes" class="chart" chart-type="bar" data="data/mostPopularLikes.json" style="width: 1900px; height: 200px;"></div>
 
 
       <footer class="site-footer">

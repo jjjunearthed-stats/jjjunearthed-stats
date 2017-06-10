@@ -1,15 +1,22 @@
-# Artists by Location
-<div 
-    class="chart" 
-    data="data/artistsByLocation.json"
-    chart-type="geoMap">
-</div>
+# Location
 
-# Artists Per Capita
-<div 
-    class="chart" 
-    data="data/artistsPerCapita.json"
-    chart-type="geoMap">
+<div class="flex-container">
+    <div class="flex-2">
+        <h2>Artists by Location</h2>
+        <div 
+            class="chart" 
+            data="data/artistsByLocation.json"
+            chart-type="geoMap">
+        </div>
+    </div>
+    <div class="flex-2">
+        <h2>Artists Per Capita</h2>
+        <div 
+            class="chart" 
+            data="data/artistsPerCapita.json"
+            chart-type="geoMap">
+        </div>
+    </div>
 </div>
 
 <div 
@@ -26,18 +33,20 @@
     chart-type="table">
 </div>
 
-# Locations played on JJJ per Year
+## Locations played on JJJ per Year
+The number of artists from a location played on JJJ per year:
 <div 
     class="chart" 
     data="data/locationsPlayedOnJJJPerYear.json"
     chart-type="line"
     style="width: 900px; height: 500px;">
-    </div>
+</div>
 
-# Locations played on Unearthed per Year
+## Locations played on Unearthed per Year
+The number of artists from a location played on Unearthed per year:
 <div 
     class="chart" 
     data="data/locationsPlayedOnUnearthedPerYear.json" 
     style="width: 900px; height: 500px;"
-    chart-type="line"
-    ></div>
+    chart-type="line">
+</div>

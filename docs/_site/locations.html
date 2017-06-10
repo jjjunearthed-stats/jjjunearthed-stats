@@ -2,11 +2,12 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Triple J Unearthed Stats</title>
+    <title>Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/assets/css/style.css?v=34a0fc67811c8586369521842f6e6662fbb1179f">
+    <link rel="stylesheet" href="styles/site.css">
     <link rel="shortcut icon" href="favicon.ico">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKzMZ4n6JHJwV0uEaeculwuqnys0RIxrQ" type="text/javascript"></script>
@@ -29,12 +30,19 @@
     </section>
 
     <section class="main-content">
-      <h1 id="artists-by-location">Artists by Location</h1>
-<div class="chart" data="data/artistsByLocation.json" chart-type="geoMap">
-</div>
+      <h1 id="location">Location</h1>
 
-<h1 id="artists-per-capita">Artists Per Capita</h1>
-<div class="chart" data="data/artistsPerCapita.json" chart-type="geoMap">
+<div class="flex-container">
+    <div class="flex-2">
+        <h2>Artists by Location</h2>
+        <div class="chart" data="data/artistsByLocation.json" chart-type="geoMap">
+        </div>
+    </div>
+    <div class="flex-2">
+        <h2>Artists Per Capita</h2>
+        <div class="chart" data="data/artistsPerCapita.json" chart-type="geoMap">
+        </div>
+    </div>
 </div>
 
 <div class="chart" data="data/artistsLocationTable.json" columns="[[&quot;string&quot;, &quot;Location&quot;],[&quot;number&quot;, &quot;Artists&quot;],[&quot;number&quot;, &quot;Artists per 100 000 people&quot;]]" data-options="{
@@ -46,12 +54,15 @@
     }" chart-type="table">
 </div>
 
-<h1 id="locations-played-on-jjj-per-year">Locations played on JJJ per Year</h1>
+<h2 id="locations-played-on-jjj-per-year">Locations played on JJJ per Year</h2>
+<p>The number of artists from a location played on JJJ per year:</p>
 <div class="chart" data="data/locationsPlayedOnJJJPerYear.json" chart-type="line" style="width: 900px; height: 500px;">
-    </div>
+</div>
 
-<h1 id="locations-played-on-unearthed-per-year">Locations played on Unearthed per Year</h1>
-<div class="chart" data="data/locationsPlayedOnUnearthedPerYear.json" style="width: 900px; height: 500px;" chart-type="line"></div>
+<h2 id="locations-played-on-unearthed-per-year">Locations played on Unearthed per Year</h2>
+<p>The number of artists from a location played on Unearthed per year:</p>
+<div class="chart" data="data/locationsPlayedOnUnearthedPerYear.json" style="width: 900px; height: 500px;" chart-type="line">
+</div>
 
 
       <footer class="site-footer">

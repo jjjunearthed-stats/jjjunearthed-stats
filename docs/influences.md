@@ -1,4 +1,6 @@
-# Most Popular Influences
+# Influences
+The most popular influences for artists per genre:
+
 <select class="chartSelect" chart-id="mostpopularinfluences">
     <option value="data/mostPopularInfluences.json">All</option>
     <option value="data/mostPopularInfluencesDance.json">Dance</option>
@@ -16,4 +18,4 @@
     class="chart" 
     chart-type="bar"
     data="data/mostPopularInfluences.json" 
-    style="width: 900px; height: 900px;"></div>
+    style="width: 900px; height: 700px;"></div>

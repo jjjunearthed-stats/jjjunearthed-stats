@@ -1,4 +1,6 @@
-# Most Popular Likes
+# Likes
+The most popular likes for artists per genre:
+
 <select class="chartSelect" chart-id="mostpopularlikes">
     <option value="data/mostPopularLikes.json">All</option>
     <option value="data/mostPopularLikesDance.json">Dance</option>
@@ -16,4 +18,4 @@
     class="chart" 
     chart-type="bar"
     data="data/mostPopularLikes.json" 
-    style="width: 900px; height: 900px;"></div>
+    style="width: 1900px; height: 200px;"></div>

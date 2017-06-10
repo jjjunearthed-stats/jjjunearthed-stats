@@ -1,4 +1,6 @@
-# Most Popular Tags
+# Tags
+The most popular tags for artists per genre:
+
 <select class="chartSelect" chart-id="mostpopulartags">
     <option value="data/mostPopularTags.json">All</option>
     <option value="data/mostPopularTagsDance.json">Dance</option>
