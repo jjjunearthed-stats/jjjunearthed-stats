@@ -10,14 +10,16 @@
     class="chart" 
     data="data/genresPlayedOnJJJ.json" 
     chart-type="bar"
-    style="width: 900px; height: 500px;"></div>
+    data-options='{"orientation": "horizontal", "legend": { position: "none" } }'
+    style="width: 900px; height: 400px;"></div>
 
 # Genres played on Unearthed
 <div 
     class="chart" 
     data="data/genresPlayedOnUnearthed.json" 
     chart-type="bar"
-    style="width: 900px; height: 500px;"></div>
+    data-options='{"orientation": "horizontal", "legend": { position: "none" } }'
+    style="width: 900px; height: 400px;"></div>
 
 # Genres per Year
 <div 

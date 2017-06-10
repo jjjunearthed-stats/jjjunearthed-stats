@@ -5,13 +5,8 @@ unobtrusiveGoogleCharts.options.geoMap = {
 };
 
 unobtrusiveGoogleCharts.options.bar = {
-    orientation: "horizontal",
-    legend: { position: "none" },
-    hAxis: {
-          slantedText:true,
-          slantedTextAngle:45
-          
-        }
+    orientation: "vertical",
+    legend: { position: "none" }
 };
 
 unobtrusiveGoogleCharts.options.line = {
