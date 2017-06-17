@@ -22,13 +22,6 @@ var unobtrusiveGoogleCharts = {
             table.draw(data, options);
         }
     },
-    chartPackages: {
-        "geoMap": ['geochart'],
-        "bar": ['bar'],
-        "pie": [],
-        "line": ['line'],
-        "table": ['table']
-    },
 
     drawChartElement: function (element, data) {
         var dataUrl = data || element.attr("data");
@@ -65,32 +58,44 @@ var unobtrusiveGoogleCharts = {
 
             unobtrusiveGoogleCharts.drawChartElement(chartElement, data);
         });
+    }
+}
+
+unobtrusiveGoogleCharts.init = {
+    packagesForChart: {
+        "geoMap": ['geochart'],
+        "bar": ['bar'],
+        "pie": [],
+        "line": ['line'],
+        "table": ['table']
     },
 
     loadOptions: function() {
-        var loadOptions = {
-            packages: ['corechart']
-        };
+        var chartTypes = $.map($('div.chart'), function(e) {
+            return $(e).attr('chart-type');
+        });
 
-        var packages = new Set();
-        $('div.chart').each(function () {
-            var chartPackages = unobtrusiveGoogleCharts.chartPackages[$(this).attr('chart-type')];
-            chartPackages.forEach(function(p) {
-                packages.add(p);
+        return {
+            packages: unobtrusiveGoogleCharts.init.chartPackages(chartTypes),
+            mapsApiKey: unobtrusiveGoogleCharts.options.mapsApiKey
+        };
+    },
+
+    chartPackages: function(chartTypes) {
+        var packages = new Set(['corechart']);
+
+        chartTypes.forEach(function (chartType) {
+            var chartPackages = unobtrusiveGoogleCharts.init.packagesForChart[chartType];
+            chartPackages.forEach(function(package) {
+                packages.add(package);
             });
         });
 
-        loadOptions.packages = Array.from(packages);
-        
-        if (unobtrusiveGoogleCharts.options.mapsApiKey) {
-            loadOptions.mapsApiKey = unobtrusiveGoogleCharts.options.mapsApiKey
-        }
-
-        return loadOptions;
+        return Array.from(packages);
     }
 }
 
 $(document).ready(function () {
-    google.charts.load('current', unobtrusiveGoogleCharts.loadOptions());
+    google.charts.load('current', unobtrusiveGoogleCharts.init.loadOptions());
     google.charts.setOnLoadCallback(unobtrusiveGoogleCharts.bindChartSelectors);
 });
