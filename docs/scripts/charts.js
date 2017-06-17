@@ -22,6 +22,13 @@ var unobtrusiveGoogleCharts = {
             table.draw(data, options);
         }
     },
+    chartPackages: {
+        "geoMap": ['geochart'],
+        "bar": ['bar'],
+        "pie": [],
+        "line": ['line'],
+        "table": ['table']
+    },
 
     drawChartElement: function (element, data) {
         var dataUrl = data || element.attr("data");
@@ -58,10 +65,32 @@ var unobtrusiveGoogleCharts = {
 
             unobtrusiveGoogleCharts.drawChartElement(chartElement, data);
         });
+    },
+
+    loadOptions: function() {
+        var loadOptions = {
+            packages: ['corechart']
+        };
+
+        var packages = new Set();
+        $('div.chart').each(function () {
+            var chartPackages = unobtrusiveGoogleCharts.chartPackages[$(this).attr('chart-type')];
+            chartPackages.forEach(function(p) {
+                packages.add(p);
+            });
+        });
+
+        loadOptions.packages = Array.from(packages);
+        
+        if (unobtrusiveGoogleCharts.options.mapsApiKey) {
+            loadOptions.mapsApiKey = unobtrusiveGoogleCharts.options.mapsApiKey
+        }
+
+        return loadOptions;
     }
 }
 
 $(document).ready(function () {
-    google.charts.load('current', { packages: ['geochart', 'table', 'line', 'corechart', 'bar'] });
+    google.charts.load('current', unobtrusiveGoogleCharts.loadOptions());
     google.charts.setOnLoadCallback(unobtrusiveGoogleCharts.bindChartSelectors);
 });

@@ -12,3 +12,5 @@ unobtrusiveGoogleCharts.options.bar = {
 unobtrusiveGoogleCharts.options.line = {
     curveType: "function"
 }
+
+unobtrusiveGoogleCharts.options.mapsApiKey = "AIzaSyAKzMZ4n6JHJwV0uEaeculwuqnys0RIxrQ";
