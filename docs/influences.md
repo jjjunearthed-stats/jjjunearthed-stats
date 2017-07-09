@@ -18,4 +18,4 @@ The most popular influences for artists per genre:
     class="chart" 
     chart-type="bar"
     data="data/mostPopularInfluences.json" 
-    style="width: 900px; height: 700px;"></div>
+    style="height: 700px;"></div>

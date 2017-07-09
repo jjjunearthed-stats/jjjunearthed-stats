@@ -18,4 +18,4 @@ The most popular tags for artists per genre:
     class="chart" 
     chart-type="bar"
     data="data/mostPopularTags.json" 
-    style="width: 900px; height: 700px;"></div>
+    style="height: 700px;"></div>

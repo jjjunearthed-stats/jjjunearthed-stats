@@ -1,5 +1,6 @@
 var unobtrusiveGoogleCharts = {
     options: {},
+    colors: ['blue', 'red', 'green', 'cyan', 'magenta', 'purple'],
     drawChart: {
         "geoMap": function (element, data, options) {
             var chart = new google.visualization.GeoChart(element);
@@ -7,6 +8,8 @@ var unobtrusiveGoogleCharts = {
         },
         "bar": function (element, data, options) {
             var chart = new google.charts.Bar(element);
+
+            console.log(data);
             chart.draw(data, google.charts.Bar.convertOptions(options));
         },
         "pie": function (element, data, options) {
@@ -61,6 +64,38 @@ var unobtrusiveGoogleCharts = {
     }
 }
 
+unobtrusiveGoogleCharts.chart = {
+    drawChart: {
+        "geoMap": function (element, data, options) {
+            var chart = new google.visualization.GeoChart(element);
+            chart.draw(data, options);
+        },
+        "bar": function (element, data, options) {
+            var chart = new google.charts.Bar(element);
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        },
+        "pie": function (element, data, options) {
+            var chart = new google.visualization.PieChart(element);
+            chart.draw(data, options);
+        },
+        "line": function (element, data, options) {
+            var chart = new google.charts.Line(element);
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        },
+        "table": function (element, data, options) {
+            var table = new google.visualization.Table(element);
+            table.draw(data, options);
+        }
+    },
+    packages: {
+        "geoMap": ['geochart'],
+        "bar": ['bar'],
+        "pie": [],
+        "line": ['line'],
+        "table": ['table']
+    },
+}
+
 unobtrusiveGoogleCharts.init = {
     packagesForChart: {
         "geoMap": ['geochart'],
@@ -98,4 +133,15 @@ unobtrusiveGoogleCharts.init = {
 $(document).ready(function () {
     google.charts.load('current', unobtrusiveGoogleCharts.init.loadOptions());
     google.charts.setOnLoadCallback(unobtrusiveGoogleCharts.bindChartSelectors);
+});
+
+$(window).resize(function() {
+    if(this.resizeTO) clearTimeout(this.resizeTO);
+    this.resizeTO = setTimeout(function() {
+        $(this).trigger('resizeEnd');
+    }, 500);
+});
+
+$(window).on('resizeEnd', function() {
+    unobtrusiveGoogleCharts.bindChartSelectors();
 });

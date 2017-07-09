@@ -39,7 +39,7 @@ The number of artists from a location played on JJJ per year:
     class="chart" 
     data="data/locationsPlayedOnJJJPerYear.json"
     chart-type="line"
-    style="width: 900px; height: 500px;">
+    style="height: 500px;">
 </div>
 
 ## Locations played on Unearthed per Year
@@ -47,6 +47,6 @@ The number of artists from a location played on Unearthed per year:
 <div 
     class="chart" 
     data="data/locationsPlayedOnUnearthedPerYear.json" 
-    style="width: 900px; height: 500px;"
+    style="height: 500px;"
     chart-type="line">
 </div>

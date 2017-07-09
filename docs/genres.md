@@ -3,7 +3,7 @@
     class="chart" 
     data="data/genrePercentages.json"
     chart-type="pie"
-    style="width: 900px; height: 500px;"></div>
+    style="height: 500px;"></div>
 
 # Genres played on JJJ
 <div 
@@ -11,7 +11,7 @@
     data="data/genresPlayedOnJJJ.json" 
     chart-type="bar"
     data-options='{"orientation": "horizontal", "legend": { position: "none" } }'
-    style="width: 900px; height: 400px;"></div>
+    style="height: 400px;"></div>
 
 # Genres played on Unearthed
 <div 
@@ -19,25 +19,25 @@
     data="data/genresPlayedOnUnearthed.json" 
     chart-type="bar"
     data-options='{"orientation": "horizontal", "legend": { position: "none" } }'
-    style="width: 900px; height: 400px;"></div>
+    style="height: 400px;"></div>
 
 # Genres per Year
 <div 
     class="chart" 
     data="data/genresPerYear.json" 
     chart-type="line"
-    style="width: 900px; height: 500px;"></div>
+    style="height: 500px;"></div>
 
 # Genres played on JJJ per Year
 <div 
     class="chart" 
     data="data/genresPlayedOnJJJPerYear.json" 
     chart-type="line"
-    style="width: 900px; height: 500px;"></div>
+    style="height: 500px;"></div>
 
 # Genres played on Unearthed per Year
 <div 
     class="chart" 
     data="data/genresPlayedOnUnearthedPerYear.json" 
     chart-type="line"
-    style="width: 900px; height: 500px;"></div>
+    style="height: 500px;"></div>
