@@ -11,29 +11,11 @@ unobtrusiveGoogleCharts.options.geoMap = {
 
 unobtrusiveGoogleCharts.options.bar = {
     orientation: "vertical",
-    legend: { position: "none" },
-    animation: {
-        startup: true,
-        duration: 2000,
-        easing: 'linear',
-    }
+    legend: { position: "none" }
 };
 
 unobtrusiveGoogleCharts.options.line = {
-    curveType: "function",
-    animation: {
-        startup: true,
-        duration: 2000,
-        easing: 'linear',
-    }
-}
-
-unobtrusiveGoogleCharts.options.pie = {
-    animation: {
-        startup: true,
-        duration: 2000,
-        easing: 'linear',
-    }
+    curveType: "function"
 }
 
 unobtrusiveGoogleCharts.options.mapsApiKey = "AIzaSyAKzMZ4n6JHJwV0uEaeculwuqnys0RIxrQ";
