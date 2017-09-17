@@ -29,7 +29,27 @@ class ArtistStats:
     def flatten(l):
         return [item for sublist in l for item in sublist]
 
-    def gender_per_genre(self, genre=None):
+    def genders_stacked(self, genres):
+        data = []
+        gender_names = list(self.genderNames.values())
+        genders = ["Gender"] + gender_names
+
+        for genre in genres:
+            group_by_gender = self.gender_grouping(genre)
+            genre_genders = [genre]
+
+            for gender_key in self.genderNames.keys():
+                grouping = next((g for g in list(group_by_gender.iteritems()) if g[0] == gender_key))
+                genre_genders.append(grouping[1])
+
+            data.append(genre_genders)
+
+        index_to_sort = gender_names.index("Female") + 1
+        data.sort(key=lambda g: g[index_to_sort])
+
+        return [genders] + data
+
+    def gender_grouping(self, genre=None):
         d = gender.Detector()
         artists = self.artists_by_genre(genre)
         names = [re.findall(r"[\w]+", a["members"]) for a in artists]
@@ -38,7 +58,10 @@ class ArtistStats:
 
         genders = [d.get_gender(n) for n in names]
         groups_df = pandas.DataFrame(data=genders, columns=["name"])
-        group_by_gender = groups_df.groupby("name").size()
+        return groups_df.groupby("name").size()
+
+    def gender_per_genre(self, genre=None):
+        group_by_gender = self.gender_grouping(genre)
 
         data = [["Gender", "Number"]]
         for name, size in group_by_gender.iteritems():

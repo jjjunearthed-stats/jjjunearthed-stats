@@ -1,8 +1,7 @@
 {
-    "andy": "Androgynous",
     "female": "Female",
     "male": "Male",
     "mostly_female": "Mostly Female",
     "mostly_male": "Mostly Male",
-    "unknown": "Unknown"
+    "andy": "Androgynous"
 }
