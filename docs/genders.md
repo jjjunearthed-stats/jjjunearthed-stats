@@ -15,6 +15,6 @@
 <div
     id="gendersbygenre"
     class="chart"
-    chart-type="bar"
+    chart-type="pie"
     data="data/genders.json"
     style="height: 700px;"></div>
