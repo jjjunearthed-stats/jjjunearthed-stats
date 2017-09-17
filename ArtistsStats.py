@@ -42,7 +42,8 @@ class ArtistStats:
 
         data = [["Gender", "Number"]]
         for name, size in group_by_gender.iteritems():
-            data.append([self.genderNames[name], size])
+            if name is not "unknown":
+                data.append([self.genderNames[name], size])
 
         return data
 
