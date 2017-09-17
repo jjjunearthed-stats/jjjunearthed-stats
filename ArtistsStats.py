@@ -17,38 +17,32 @@ class ArtistStats:
         with open("data/locationOutliers.json") as f:
             self.locationOutliers = json.loads(f.read())
 
+        with open("data/nameAnomalies.json") as f:
+            self.nameAnomalies = json.loads(f.read())
+
+        with open("data/genderNames.json") as f:
+            self.genderNames = json.loads(f.read())
+
         self.df = pandas.DataFrame(self.artists)
 
     @staticmethod
     def flatten(l):
         return [item for sublist in l for item in sublist]
 
-    @staticmethod
-    def gender_lookup(gender_name):
-        gender_dict = {
-            "andy": "Androgynous",
-            "female": "Female",
-            "male": "Male",
-            "mostly_female": "Mostly Female",
-            "mostly_male": "Mostly Male",
-            "unknown": "Unknown"
-        }
-
-        return gender_dict[gender_name]
-
     def gender_per_genre(self, genre=None):
         d = gender.Detector()
         artists = self.artists_by_genre(genre)
         names = [re.findall(r"[\w]+", a["members"]) for a in artists]
         names = self.flatten(names)
+        names = [n for n in names if n.lower() not in self.nameAnomalies and len(n) > 2]
 
         genders = [d.get_gender(n) for n in names]
-        df = pandas.DataFrame(data=genders, columns=["name"])
-        group_by_gender = df.groupby("name").size()
+        groups_df = pandas.DataFrame(data=genders, columns=["name"])
+        group_by_gender = groups_df.groupby("name").size()
 
         data = [["Gender", "Number"]]
         for name, size in group_by_gender.iteritems():
-            data.append([self.gender_lookup(name), size])
+            data.append([self.genderNames[name], size])
 
         return data
 

@@ -16,5 +16,4 @@
     id="gendersbygenre"
     class="chart"
     chart-type="pie"
-    data="data/genders.json"
-    style="height: 700px;"></div>
+    data="data/genders.json"></div>
