@@ -36,7 +36,7 @@ class ArtistStats:
 
         return gender_dict[gender_name]
 
-    def gender_per_genre(self, genre):
+    def gender_per_genre(self, genre=None):
         d = gender.Detector()
         artists = self.artists_by_genre(genre)
         names = [re.findall(r"[\w]+", a["members"]) for a in artists]

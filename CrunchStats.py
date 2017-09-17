@@ -10,6 +10,7 @@ stats = ArtistStats()
 # File.write_file("docs/data/mostPopularInfluences.json", stats.most_popular_influences())
 # File.write_file("docs/data/mostPopularLikes.json", stats.most_popular_likes())
 # File.write_file("docs/data/mostPopularTags.json", stats.most_popular_tags())
+File.write_file("docs/data/genders.json", stats.gender_per_genre())
 
 all_genres = stats.all_genres()
 
