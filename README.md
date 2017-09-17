@@ -11,7 +11,7 @@ Parses all the artists in [artists.json](data/artists.json) and spits out the st
 - [Google Charts](https://developers.google.com/chart/) are generated using [Unobtrusive Google Charts](https://github.com/craigles/unobtrusive-google-charts)
 
 ## Schema
-```
+```json
 {
   "influences": "Red Hot Chili Peppers, Infectious Grooves, Fishbone, Mr Bungle, Rage Against the Machine, Faith No More, Helmet, Brown Hornet, Primus, Incubus",
   "_type": "Artist",
