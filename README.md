@@ -7,8 +7,9 @@ A statistical analysis of every artist on Triple J Unearthed.
 
 Parses all the artists in [artists.json](data/artists.json) and spits out the stats as json files into the [docs/data](docs/data) (to generate the charts) and [docs/_data](docs/_data) (to be read server side from [Jekyll](https://jekyllrb.com/docs/datafiles/)).
 
-## Charts
-- [Google Charts](https://developers.google.com/chart/) are generated using [Unobtrusive Google Charts](https://github.com/craigles/unobtrusive-google-charts)
+## Dependencies
+- [Google Charts](https://developers.google.com/chart) are generated using [Unobtrusive Google Charts](https://github.com/craigles/unobtrusive-google-charts)
+- [Gender Guesser](https://pypi.python.org/pypi/gender-guesser) is used to guess the gender of artist members from their first name.
 
 ## Schema
 ```json
