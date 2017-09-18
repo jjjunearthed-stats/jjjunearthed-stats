@@ -15,6 +15,7 @@ stats = ArtistStats()
 all_genres = stats.all_genres()
 
 File.write_file("docs/data/gendersStacked.json", stats.genders_stacked(all_genres))
+#File.write_file("docs/data/gendersByLocation.json", stats.genders_by_location())
 
 # for g in all_genres:
 #     genre_filename = g.replace(" ", "")

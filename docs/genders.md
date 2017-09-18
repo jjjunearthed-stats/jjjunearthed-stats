@@ -1,4 +1,6 @@
-# Genders
+# Genders per genre
+
+The following illustrates the percentage of male and female representation per genre:
 
 <div
     class="chart"
@@ -10,3 +12,4 @@
           "legend": {"position": "top", "maxLines": 3}
         }'>
 </div>
+

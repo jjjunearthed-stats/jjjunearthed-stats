@@ -17,9 +17,6 @@ class ArtistStats:
         with open("data/locationOutliers.json") as f:
             self.locationOutliers = json.loads(f.read())
 
-        with open("data/nameAnomalies.json") as f:
-            self.nameAnomalies = json.loads(f.read())
-
         with open("data/genderNames.json") as f:
             self.genderNames = json.loads(f.read())
 
@@ -44,8 +41,9 @@ class ArtistStats:
 
             data.append(genre_genders)
 
-        index_to_sort = gender_names.index("Female") + 1
-        data.sort(key=lambda g: g[index_to_sort])
+        female_index = gender_names.index("Female") + 1
+        male_index = gender_names.index("Male") + 1
+        data.sort(key=lambda g: g[female_index] / g[male_index])
 
         return [genders] + data
 
@@ -54,11 +52,27 @@ class ArtistStats:
         artists = self.artists_by_genre(genre)
         names = [re.findall(r"[\w]+", a["members"]) for a in artists]
         names = self.flatten(names)
-        names = [n for n in names if n.lower() not in self.nameAnomalies and len(n) > 2]
 
         genders = [d.get_gender(n) for n in names]
         groups_df = pandas.DataFrame(data=genders, columns=["name"])
         return groups_df.groupby("name").size()
+
+    def genders_by_location(self):
+        d = gender.Detector(case_sensitive=False)
+        locations = self.by_location()
+
+        for location in locations:
+            artists = self.artists_by_location(location)
+
+            names = [re.findall(r"[\w]+", a["members"]) for a in artists]
+            names = self.flatten(names)
+            names = [n for n in names if n.lower() not in self.nameAnomalies and len(n) > 2]
+
+
+        genders = [d.get_gender(n) for n in names]
+        groups_df = pandas.DataFrame(data=genders, columns=["name"])
+        return groups_df.groupby("name").size()
+
 
     def gender_per_genre(self, genre=None):
         group_by_gender = self.gender_grouping(genre)
@@ -139,6 +153,20 @@ class ArtistStats:
 
     def artists_by_genre(self, genre):
         return [a for a in self.artists if genre in a["genre"]] if genre is not None else self.artists
+
+    def artists_by_location(self, location):
+        return [a for a in self.artists if location in a["location"]] if location is not None else self.artists
+
+    def locations(self):
+        groups = pandas.DataFrame(self.artists).groupby("location")
+
+        locations = []
+
+        for name in groups.iteritems():
+            locations.append(name)
+
+        return locations
+
 
     def most_popular_influences(self, genre=None, top_number=50):
         influences = [{"Artist": i} for a in self.artists_by_genre(genre)
