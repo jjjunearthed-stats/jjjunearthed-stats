@@ -11,16 +11,15 @@ stats = ArtistStats()
 # File.write_file("docs/data/mostPopularLikes.json", stats.most_popular_likes())
 # File.write_file("docs/data/mostPopularTags.json", stats.most_popular_tags())
 
-
-all_genres = stats.all_genres()
-
-File.write_file("docs/data/gendersStacked.json", stats.genders_stacked(all_genres))
+File.write_file("docs/data/gendersStacked.json", stats.genders_stacked())
+File.write_file("docs/data/artistsWithFemaleVocalist.json", stats.artists_with_female_vocalist())
+File.write_file("docs/data/artistsWithFemaleBassist.json", stats.artists_with_female_bassist())
 #File.write_file("docs/data/gendersByLocation.json", stats.genders_by_location())
 
-# for g in all_genres:
+#for g in ArtistStats.genres:
 #     genre_filename = g.replace(" ", "")
 #     File.write_file("docs/data/mostPopularInfluences" + genre_filename + ".json", stats.most_popular_influences(g))
-#     File.write_file("docs/data/mostPopularLikes" + genre_filename + ".json", stats.most_popular_likes(g))
+#     File.write_file("docs/data/mostPopularLikes" + genre_filename + ".jso n", stats.most_popular_likes(g))
 #     File.write_file("docs/data/mostPopularTags" + genre_filename + ".json", stats.most_popular_tags(g))
 
 # File.write_file("docs/data/genrePercentages.json", stats.genre_percentages())

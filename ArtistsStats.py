@@ -20,18 +20,28 @@ class ArtistStats:
         with open("data/genderNames.json") as f:
             self.genderNames = json.loads(f.read())
 
+        with open("data/vocalistSynonyms.json") as f:
+            self.vocalistSynonyms = json.loads(f.read())
+
+        with open("data/bassSynonyms.json") as f:
+            self.bassSynonyms = json.loads(f.read())
+
+        with open("data/genres.json") as f:
+            self.genres = json.loads(f.read())
+
         self.df = pandas.DataFrame(self.artists)
+        self.genderDetector = gender.Detector(case_sensitive=False)
 
     @staticmethod
     def flatten(l):
         return [item for sublist in l for item in sublist]
 
-    def genders_stacked(self, genres):
+    def genders_stacked(self):
         data = []
         gender_names = list(self.genderNames.values())
         genders = ["Gender"] + gender_names
 
-        for genre in genres:
+        for genre in self.genres:
             group_by_gender = self.gender_grouping(genre)
             genre_genders = [genre]
 
@@ -47,18 +57,55 @@ class ArtistStats:
 
         return [genders] + data
 
+    def artist_has_female_with_keywords(self, artist, keywords):
+        members = re.findall(r"[\w]+", artist["members"])
+
+        for i in range(0, len(members)):
+            if self.genderDetector.get_gender(members[i]) is "female":
+                if i + 1 <= len(members) - 1 and members[i+1].lower() in keywords:
+                    return True
+                elif i + 2 <= len(members) - 1 and members[i+2].lower() in keywords:
+                    return True
+
+        return False
+
+    def artists_with_female_vocalist(self):
+        genres = self.genres
+        data = []
+
+        for genre in genres:
+            artists = self.artists_by_genre(genre)
+            artists_with_female_vox = list(filter(lambda a: self.artist_has_female_with_keywords(a, self.vocalistSynonyms), artists))
+            data.append([genre, len(artists_with_female_vox), len(artists) - len(artists_with_female_vox)])
+
+        data.sort(key=lambda a: a[1] / a[2])
+
+        return [["Artist", "Has female vocalist", "Doesn't have female vocalist"]] + data
+
+    def artists_with_female_bassist(self):
+        genres = self.genres
+        data = []
+
+        for genre in genres:
+            artists = self.artists_by_genre(genre)
+            artists_with_female_vox = list(filter(lambda a: self.artist_has_female_with_keywords(a, self.bassSynonyms), artists))
+            data.append([genre, len(artists_with_female_vox), len(artists) - len(artists_with_female_vox)])
+
+        data.sort(key=lambda a: a[1] / a[2])
+
+        return [["Artist", "Has female bassist", "Doesn't have female bassist"]] + data
+
+
     def gender_grouping(self, genre=None):
-        d = gender.Detector()
         artists = self.artists_by_genre(genre)
         names = [re.findall(r"[\w]+", a["members"]) for a in artists]
         names = self.flatten(names)
 
-        genders = [d.get_gender(n) for n in names]
+        genders = [self.genderDetector.get_gender(n) for n in names]
         groups_df = pandas.DataFrame(data=genders, columns=["name"])
         return groups_df.groupby("name").size()
 
     def genders_by_location(self):
-        d = gender.Detector(case_sensitive=False)
         locations = self.by_location()
 
         for location in locations:
@@ -68,11 +115,9 @@ class ArtistStats:
             names = self.flatten(names)
             names = [n for n in names if n.lower() not in self.nameAnomalies and len(n) > 2]
 
-
-        genders = [d.get_gender(n) for n in names]
+        genders = [self.genderDetector.get_gender(n) for n in names]
         groups_df = pandas.DataFrame(data=genders, columns=["name"])
         return groups_df.groupby("name").size()
-
 
     def gender_per_genre(self, genre=None):
         group_by_gender = self.gender_grouping(genre)
@@ -128,24 +173,18 @@ class ArtistStats:
         return round(percentage, 2)
 
     def percentage_of_artists_played_per_genre(self, track_condition=lambda t: True):
-        all_genres = self.all_genres()
         data = [["Genre", "Percentage"]]
-        for g in all_genres:
+        for g in self.genres:
             data.append([g, self.percentage_of_artists(g, track_condition)])
 
         return data
 
-    def all_genres(self):
-        return set([g for a in self.artists for g in a["genre"]])
-
     def genre_percentages(self):
-        genres = [g for a in self.artists
-                  for g in a["genre"]]
 
-        number_of_genres = len(genres)
+        number_of_genres = len(self.genres)
 
         data = [["Genre", "Percentage"]]
-        for name, group in groupby(sorted(genres)):
+        for name, group in groupby(sorted(self.genres)):
             genre_percentage = len(list(group)) / number_of_genres * 100
             data.append([name, round(genre_percentage, 2)])
 
