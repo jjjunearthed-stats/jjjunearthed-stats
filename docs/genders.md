@@ -33,6 +33,24 @@ By only counting artists that have been played on JJJ, we can see the gender dis
         }'>
 </div>
 
+## Mapping band members to instrument
+Band members are stored as a single string in JJJ Unearthed. They usually list the band member followed by the instrument/s they play:
+
+`Ben Wade-Vocals/guitar, Emma Hurley-Vocals/guitar/synth, Luke Wood-Vocals/Guitar, Peter Angliss-Drums, Matt Bourke-Bass`
+
+We can try to map a band member to their instrument by seeing if the word following their name is an instrument:
+
+<pre>
+<strong>Ben</strong> <strong>Wade</strong>-Vocals/guitar, Emma Hurley-Vocals/guitar/synth, Luke Wood-Vocals/Guitar, Peter Angliss-Drums, Matt Bourke-Bass
+</pre>
+
+In this case, the following word is his surname, so we try the next word along:
+
+<pre>
+<strong>Ben</strong> Wade-<strong>Vocals</strong>/guitar, Emma Hurley-Vocals/guitar/synth, Luke Wood-Vocals/Guitar, Peter Angliss-Drums, Matt Bourke-Bass
+</pre>
+
+Thus we can say Ben plays vocals in this band.
 
 ## Female vocalists
 We can see how many artists per genre have female vocalists:
